@@ -9,8 +9,7 @@ The project aims to develop a robust 2/3D DEM code for convex particles,
  by grouping the convex ones with the typical "clump" technique.
 
       Copyright (C) 2016 - 2020   Shiwei Zhao
-	      South China University of Technology
-   Hong Kong University of Science and Technology
+ Hong Kong University of Science and Technology, South China University of Technology
 
 This script is free software; you can redistribute it and/or 
 modify it under the terms of the GNU Lesser General Public License 
