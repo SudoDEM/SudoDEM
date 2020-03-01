@@ -1,0 +1,4 @@
+#!/bin/sh
+pyrcc4 -o img_rc.py img.qrc
+pyuic4 controller.ui > ui_controller.py
+pyuic4 SeqSerializable.ui > ui_SeqSerializable.py

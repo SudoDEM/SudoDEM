@@ -1,0 +1,119 @@
+# 1. it tells python that sudodem (this directory) is package of python modules
+#	see http://http://www.python.org/doc/2.1.3/tut/node8.html#SECTION008400000000000000000
+#
+# 2. import the runtime namespace (will be populated from within c++)
+#
+
+"""Common initialization core for sudodem.
+
+This file is executed when anything is imported from sudodem for the first time.
+It loads sudodem plugins and injects c++ class constructors to the __builtins__
+(that might change in the future, though) namespace, making them available
+everywhere.
+"""
+
+import ctypes,sys
+try:
+	import dl
+except ImportError:
+	import DLFCN as dl
+if True: # not eval('${mono}'):
+	# see file:///usr/share/doc/python2.6/html/library/sys.html#sys.setdlopenflags
+	# and various web posts on the topic, e.g.
+	# * http://gcc.gnu.org/faq.html#dso
+	# * http://www.code-muse.com/blog/?p=58
+	# * http://wiki.python.org/moin/boost.python/CrossExtensionModuleDependencies
+	sys.setdlopenflags(dl.RTLD_NOW | dl.RTLD_GLOBAL)
+else: sys.setdlopenflags(dl.RTLD_NOW)
+
+# important: initialize c++ by importing libstdc++ directly
+# see http://www.abclinuxu.cz/poradna/programovani/show/286322
+# https://bugs.launchpad.net/bugs/490744
+#
+# This is already fixed in systems, newer, than Ubuntu 10.04. anyway for
+# back-compatibility we will keep it.
+
+libstdcxx='${libstdcxx}' # substituted by scons
+try:
+  ctypes.cdll.LoadLibrary(libstdcxx)
+except: pass
+
+#
+
+# now ready for c++ imports
+
+# find plugin directory
+import os,os.path
+#import config
+# find plugins recursively
+plugins=[]
+prefix= os.environ['SUDODEM_PREFIX']
+libDir=os.path.abspath(prefix+'/lib/sudodem')
+confDir=os.environ['HOME']+'/.sudodem'
+# might add followlinks=True to os.walk, for python>=2.6
+for root,dirs,files in os.walk(libDir):
+	# skip any directory named 'dbg' in the non-debug build
+	if 'dbg' in dirs: dirs.remove('dbg')
+	for f in files:
+		# ouch, ugly!
+		#if not config.debug and '/dbg/' in root: continue
+		if not (f.startswith('lib') and f.endswith('.so')): continue
+		plugin=os.path.join(libDir,root,f)
+		plugins.append(plugin)
+if 'SUDODEM_DEBUG' in os.environ:
+	print 'The following plugins will be loaded:'
+	for p in plugins: print '\t'+p
+
+# c++ initialization code
+import boot
+boot.initialize(plugins,confDir)
+import system
+
+# create proxies for deprecated classes
+deprecatedTypes=system.cxxCtorsDict()
+# insert those in the module namespace
+globals().update(deprecatedTypes)
+# declare what should be imported for "from sudodem import *"
+__all__=deprecatedTypes.keys()+['O']
+
+try:
+	from minieigen import *
+except ImportError:
+	from miniEigen import *
+
+from wrapper import *
+# import to separate namespace to be able to call dir(miniEigen) and dir(wrapper) below
+import wrapper
+
+try:
+	import minieigen
+except ImportError:
+	import miniEigen
+
+# out-of-class docstrings for some classes
+import _extraDocs
+# import a few "important" modules along with *
+import utils # some others?
+__all__+=['utils',]+dir(wrapper)
+
+try:
+	__all__+=dir(miniEigen)
+except NameError:
+	pass
+
+# make O and wrapper.Omega part of __builtin__ (equvialent to global)
+import __builtin__
+__builtin__.__dict__['O'] = O
+__builtin__.__dict__['Omega'] = wrapper.Omega
+# define a default list of engine
+O.engines=[
+		ForceResetter(),
+		InsertionSortCollider([Bo1_Sphere_Aabb(),Bo1_Facet_Aabb(),Bo1_Box_Aabb()]),
+		InteractionLoop(
+			[Ig2_Sphere_Sphere_ScGeom(),Ig2_Facet_Sphere_ScGeom(),Ig2_Box_Sphere_ScGeom()],
+			[Ip2_FrictMat_FrictMat_FrictPhys()],	#for linear model only
+			[Law2_ScGeom_FrictPhys_CundallStrack()],	#for linear model only
+		),
+		GlobalStiffnessTimeStepper(timeStepUpdateInterval=10),
+		NewtonIntegrator()
+	]

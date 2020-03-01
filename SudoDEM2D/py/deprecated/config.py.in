@@ -1,0 +1,51 @@
+# encoding: utf-8
+"""
+Compile-time configuration for sudodem.
+
+Template file is processed by cmake to create the actual configuration at build-time.
+"""
+import os,datetime,os.path
+prefix='${runtimePREFIX}' if not os.environ.has_key('SUDODEM_PREFIX') else os.environ['SUDODEM_PREFIX']
+suffix='${SUFFIX}'
+
+libPATH='${LIBRARY_OUTPUT_PATH}'
+if (libPATH[1:] == '{LIBRARY_OUTPUT_PATH}'): libPATH='lib'
+
+libDir=os.path.abspath(prefix+'/'+libPATH+'/sudodem${SUFFIX}')
+confDir=os.environ['HOME']+'/.sudodem${SUFFIX}'
+libstdcxx='${libstdcxx}'
+
+features='${CONFIGURED_FEATS}'.split(' ')
+if (features[0]==''): features=features[1:]
+
+revision='${realVersion}'
+version='${version}'
+sourceRoot='${sourceRoot}'
+
+# project metadata
+metadata=dict(
+	short_desc='open-source platform for dynamic computations',
+	long_desc='Extensible open-source framework for discrete numerical models, focused on Discrete Element Method. The computation parts are written in c++ using flexible object model, allowing independent implementation of new alogrithms and interfaces. Python is used for rapid and concise scene construction, simulation control, postprocessing and debugging.\n\n\n\nSee http://www.sudodem-dem.org/ for documentation and http://www.launchpad.net/sudodem for the project itself.\n\nThis is version %s with features %s.'%(version,','.join(features)),
+	author='SudoDEM Developers Team',
+	website='http://www.sudodem-dem.org',
+	author_contact='http://www.launchpad.net/~sudodem-dev',
+	mailinglist='sudodem-users@lists.launchpad.net',
+	bugtracker='http://bugs.launchpad.net/sudodem',
+	copyright='© 2003--%s'%(datetime.date.today().year),
+	license='''This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published
+by the Free Software Foundation; either version 2 of the License,
+or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA 02111-1307 USA.
+''',
+)
+

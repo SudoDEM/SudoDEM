@@ -1,0 +1,2 @@
+#define PRG_VERSION "SudoDEM @realVersion@"
+#define PRG_FEATURE "@CONFIGURED_FEATS@"
