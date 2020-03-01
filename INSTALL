@@ -1,0 +1,82 @@
+Prerequisites
+1. CMAKE ---OK (2.8.12.2)
+2. GCC ---OK (4.4.7)
+3. BOOST 1.35 OR LATER ---OK (1.41)
+4. QT LIBRARY (qt3) ---OK
+5. FREEGLUT3	    ---OK
+6. libQGLViewer	    ---NEED INSTALLING
+7. python, numpy, ipython ---OK
+8. matplotlib		---OK
+9. eigen (>=3.2.1)	---NEED INSTALLING (3.2.3)
+10. gdb			---OK
+11. sqlite3		---OK
+12. Loki		---NEED INSTALLING
+
+#installation of BOOST
+1) full LIBRARY
+./bootstrap.sh --prefix=$PWD/../boostinstall --with-libraries=python,thread,filesystem,iostreams,regex,serialization,system,date_time
+2) keep sublibraries
+compiling bcp to extract the sublibraries
+./bootstrap.sh
+./b2 tools/bcp
+add the path of binary bcp to PATH
+then extract the sublibraries
+bcp build predef python thread filesystem iostreams regex serialization system date_time ../boost #../boost is the directory for the extracted sublibraries
+#compile the sublibraries then.
+
+Here are some commands for compiling:
+#cmake -DCMAKE_INSTALL_PREFIX=/nfs/stak/students/z/zhaoshi/Downloads/install /nfs/stak/students/z/zhaoshi/Downloads/trunk-1.11.1 -DINSTALL_PREFIX=/nfs/stak/students/z/zhaoshi/Downloads/install
+cmake -DCMAKE_INSTALL_PREFIX=/nfs/stak/students/z/zhaoshi/Downloads/yadeinstall /nfs/stak/students/z/zhaoshi/Documents/myYADE -DINSTALL_PREFIX=/nfs/stak/students/z/zhaoshi/Downloads/yadeinstall
+cmake -DCMAKE_INSTALL_PREFIX=../../DEMinstall ../SudoDEM -DINSTALL_PREFIX=../../DEMinstall
+cmake -DCMAKE_INSTALL_PREFIX=../SudoDEMgitinstall ../SudoDEMgit -DINSTALL_PREFIX=../SudoDEMgitinstall
+cmake ../SudoDEMgit
+
+make install
+
+
+The packages need installing including:
+1.Eigen
+2.libQGLViewer
+3.loki
+4.minieigen
+5.PyQT4
+6.PyQt4-devel
+7.python-xlib
+8.tkinter
+9.new version Boost(1.59)
+Some MEMO when installing these above packages:
+Prior to starting:
+1.Modify CMakeList.txt.
+	set(Python_ADDITIONAL_VERSIONS 2.6)--specifying the exact vertion of python to find its corresponding libs.
+	ENABLE_GTS -->OFF
+	ENABLE_CGAL -->OFF
+	ENABLE_GL2PS OFF
+	Eigen3 founding just remains INCLUDE_DIRECTORIES($(EIGEN3_INCLUDE_DIR)) and VECTORIZE part, and comment the rest part.
+2.Create a file named .cshrc at home directory due to the tcsh terminal.
+	Add the full paths of python packages and others (e.g., yade installation directory, and bin includes pyrcc4 etc.) to PATH.
+Here we go:
+1.Eigen-3.2.3
+	1)Change CMakeList.txt and FindEigen3.cmake. We should specify the exact directory of Eigen3. Caution: using the absolute path.
+2.libQGLViewer-2.6.3
+	1)The version may be higher than that used in YADE. So some cautions need paying attention.
+	Under the directory qt4 of YADE:
+	2) "qreal" (data type, double) has been introduced in the new version. The codes in the direction of GUI of YADE should be changed.
+	We added a head file "qglobal.h" in GLViewer.hpp, meanwhile, we replaced "float" with "qreal".
+	In GLViewer.hpp, the three headfiles (qglviewer.h, manipulatedFrame.h and constraint.h) should be specified with the full paths.
+	A compilation error may occor if we did not delete "virtual" ahead "ZNear()" at Line 156 in GLViewer.hpp.
+	Generate img_rc.py and ui_controller.py using commands pyrcc4 and pyuic4, respectively (see the Makefile in gui under build. I do not
+	know why the two commands aren't be executed when building.). Note: pyrcc4 and pyuic4 are included in PyQt4-devel. Copy both files into build after generated.
+
+
+	Under the directory QGLViewer of libQGLViewer:
+	Replace "qreal" with "float" ahead zNear() at Line 231 in camera.h.
+
+3.loki-0.1.7
+	Modify FindLoki.cmake under cmake. Specify the full path of LOKI_INCLUDE_DIR and LOKI_LIBRARY.
+
+4.minieigen-0.5.3
+	Modify setup.py with the full path of Eigen3 used.
+	Excute the command python install setup.py --user, thereby installing into user's home.
+
+5.PYQt4, PyQt4-devel, python-xlib, and tkinter
+  These packages are installed by extracting their RPMs then put the files into the right places.
