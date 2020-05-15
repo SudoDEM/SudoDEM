@@ -1,7 +1,7 @@
 SudoDEM: A Discrete Element Code for Non-spherical Particles
 
-SudoDEM is specifically designed for modeling non-spherical particles using discrete element method (DEM), which inherits 
-a basic framework of an open-source DEM code, YADE (yade-dem.org). The project aims to develop a robust 2/3D DEM code for convex particles, e.g., polyhedrons, super-ellipsoids, poly-superellipsoids, cylinders and cones for 3D, disks and superellipses for 2D. The concave shapes can be constructed by grouping the convex ones with the typical "clump" technique.
+SudoDEM (https://sudodem.github.io) is specifically designed for modeling non-spherical particles using discrete element method (DEM), which inherits 
+a basic framework of an open-source DEM code, YADE (https://yade-dem.org). The project aims to develop a robust 2/3D DEM code for convex particles, e.g., polyhedrons, super-ellipsoids, poly-superellipsoids, cylinders and cones for 3D, disks and superellipses for 2D. The concave shapes can be constructed by grouping the convex ones with the typical "clump" technique.
 
       Copyright (C) 2016 - 2020   Shiwei Zhao
  Hong Kong University of Science and Technology, South China University of Technology
