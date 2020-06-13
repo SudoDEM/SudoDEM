@@ -70,6 +70,7 @@ class TriElement : public Shape{
 	// takes fakeVel in account, with the NaN special case as documented
 	std::tuple<Vector3r,Vector3r> interpolatePtLinAngVel(const Vector3r& x) const;
 	std::tuple<Vector3r,Vector3r,Vector3r> getOuterVectors() const;
+	bool isPointInTriangle(const Vector3r& pt);
 	// generic routine: return nearest point on triangle closes to *pt*, given triangle vertices and its normal
 	static Vector3r getNearestTrianglePt(const Vector3r& pt, const Vector3r& A, const Vector3r& B, const Vector3r& C, const Vector3r& normal);
     //
@@ -156,30 +157,5 @@ class Gl1_TriElement : public GlShapeFunctor
 };
 
 REGISTER_SERIALIZABLE(Gl1_TriElement);
-class Ig2_TriElement_Sphere_ScGeom : public IGeomFunctor
-{
-	public :
-		virtual bool go(const shared_ptr<Shape>& cm1,
-					const shared_ptr<Shape>& cm2,
-					const State& state1,
-					const State& state2,
-					const Vector3r& shift2,
-					const bool& force,
-					const shared_ptr<Interaction>& c);
-		virtual bool goReverse(	const shared_ptr<Shape>& cm1,
-					const shared_ptr<Shape>& cm2,
-					const State& state1,
-					const State& state2,
-					const Vector3r& shift2,
-					const bool& force,
-					const shared_ptr<Interaction>& c);
-	SUDODEM_CLASS_BASE_DOC_ATTRS(Ig2_TriElement_Sphere_ScGeom,IGeomFunctor,"Create/update a :yref:`ScGeom` instance representing intersection of :yref:`TriElement` and :yref:`Sphere`.",
-		((Real,shrinkFactor,((void)"no shrinking",0),,"The radius of the inscribed circle of the facet is decreased by the value of the sphere's radius multipled by *shrinkFactor*. From the definition of contact point on the surface made of facets, the given surface is not continuous and becomes in effect surface covered with triangular tiles, with gap between the separate tiles equal to the sphere's radius multiplied by 2×*shrinkFactor*. If zero, no shrinking is done."))
-	);
-	DECLARE_LOGGER;
-	FUNCTOR2D(TriElement,Sphere);
-	DEFINE_FUNCTOR_ORDER_2D(TriElement,Sphere);
-};
 
-REGISTER_SERIALIZABLE(Ig2_TriElement_Sphere_ScGeom);
 
