@@ -80,3 +80,36 @@ Here we go:
 
 5.PYQt4, PyQt4-devel, python-xlib, and tkinter
   These packages are installed by extracting their RPMs then put the files into the right places.
+
+
+
+
+
+
+
+
+#Install on Ubuntu
+sudo apt install biuld-essential, cmake, freeglut3-dev, zlib1g-dev, python-dev, qt4-default, libbz2-dev, libxi-dev, libglib2.0-dev, libxmu-dev
+
+#Python modules
+python-numpy python-tk python-xlib python-qt4 ipython3.0 python-matplotlib
+pip install --install-option="--prefix= /home/sway/SudoDEM/3rdlib/py" python-numpy, python-tk, python-xlib, python-qt4, ipython3.0 
+
+#Boost
+cd boost−1_6_7
+./bootstrap.sh −−prefix=$PWD/../boost167 −−with−libraries=python,thread,filesystem,iostreams,regex,serialization,system,date_time link=shared runtime−link=
+shared −−without−icu 
+./b2 −j3
+./b2 install
+
+#Minieigen
+set(BOOST_ROOT "/home/swayzhao/software/DEM/3rdlib/boost167 ")
+mkdir build
+cd build 
+cmake ../ 
+make
+
+#LibQGLViewer-2.6.3
+cd QGLViewerqmake 
+make
+

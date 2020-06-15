@@ -209,9 +209,21 @@ void Bo1_Superellipse_Aabb::go(const shared_ptr<Shape>& ig, shared_ptr<Bound>& b
   //use a fixed aabb
 	Vector2r halfsize(r_max,r_max);
 	//the aabb should be optimized in future.
+	if(!scene->isPeriodic){
+		aabb->min=se2.position-halfSize; aabb->max=se2.position+halfSize;
+		return;
+	}
+	if(scene->cell->hasShear()) {//debug for 2d
+	Vector2r refHalfSize(halfSize);
+	const Real& _cos=scene->cell->getCos();
+		//cerr<<"cos["<<i<<"]"<<cos[i]<<" ";
+		halfSize+=.5*refHalfSize*(1/_cos-1);
+	}
+	//cerr<<" || "<<halfSize<<endl;
+	aabb->min = scene->cell->unshearPt(se2.position)-halfSize;
+	aabb->max = scene->cell->unshearPt(se2.position)+halfSize;
 
-	aabb->min=se2.position - halfsize;
-	aabb->max=se2.position + halfsize;
+
 }
 
 //**********************************************************************************
