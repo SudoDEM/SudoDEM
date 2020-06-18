@@ -15,7 +15,7 @@ sudo apt install python-numpy python-tk python-xlib python-qt4
 
 #3. Boost
 wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz
-tar xaf boost_1_67_0.tar.gz
+tar xzf boost_1_67_0.tar.gz
 cd boost_1_67_0
 ./bootstrap.sh  --with-libraries=python,thread,filesystem,iostreams,regex,serialization,system,date_time link=shared runtime-link=shared --without-icu 
 #./b2 −j3 #compile with 3 threads
@@ -26,11 +26,11 @@ cd boost_1_67_0
 #get the eigen source first
 cd $WORKSPACE
 wget http://bitbucket.org/eigen/eigen/get/3.3.5.tar.bz2
-tar xaf 3.3.5.tar.bz2
+tar xzf 3.3.5.tar.bz2
 mv eigen-eigen-b3f3d4950030 Eigen-3.3.5
 #get the minieigen source
 wget https://github.com/SwaySZ/minieigen/archive/minieigen-1.0.tar.gz
-tar xaf minieigen-1.0.tar.gz 
+tar xzf minieigen-1.0.tar.gz 
 cd minieigen-minieigen-1.0
 mkdir build
 cd build 
@@ -49,3 +49,7 @@ make
 cd $WORKSPACE
 cp -rf HeaderLib/lib 3rdlibs
 mv 3rdlibs/py/lib/minieigen.so 3rdlibs/py/minieigen.so
+#IPython 3.0
+wget https://github.com/SwaySZ/IPython/blob/master/IPython.tar.gz
+tar xzf IPython.tar.gz
+cp -rf IPython 3rdlibs/py/IPython

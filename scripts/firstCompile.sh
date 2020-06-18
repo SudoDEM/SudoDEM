@@ -17,4 +17,4 @@ cp -rf 3rdlibs sudodeminstall/SudoDEM2D/lib/
 #7. Set PATH in ~/.bashrc
 #Append the following command into `~/.bashrc'.
 #PATH=${PATH}:/home/xxx/SudoDEM/sudodeminstall/SudoDEM2D/bin
-echo 'PATH=${PATH}:/home/xxx/SudoDEM/sudodeminstall/SudoDEM2D/bin'>> ~/.bashrc
+echo 'PATH=${PATH}:'$WORKSPACE/sudodeminstall/SudoDEM2D/bin >> ~/.bashrc
