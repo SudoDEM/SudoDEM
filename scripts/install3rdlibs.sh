@@ -4,6 +4,7 @@
 cd ..
 mkdir 3rdlib
 cd 3rdlib
+mkdir 3rdlibs/py -p
 #Install on Ubuntu
 WORKSPACE=$PWD
 #1. Basic dependencies
@@ -47,7 +48,7 @@ make
 
 #cp all dynamic libraries into a folder '3rdlibs'.
 cd $WORKSPACE
-cp -rf HeaderLib/lib 3rdlibs
+cp -rf HeaderLib/lib/*.so* 3rdlibs/*
 mv 3rdlibs/py/lib/minieigen.so 3rdlibs/py/minieigen.so
 #IPython 3.0
 wget https://github.com/SwaySZ/IPython/archive/3.0.tar.gz
