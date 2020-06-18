@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ..
 WORKSPACE=$PWD
 #6. Compile SudoDEM2D
 mkdir build2d

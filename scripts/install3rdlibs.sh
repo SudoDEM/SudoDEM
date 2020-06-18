@@ -1,7 +1,9 @@
 #!/bin/bash
 
 #install the 3rd-party libraries for SudoDEM
-
+cd ..
+mkdir 3rdlib
+cd 3rdlib
 #Install on Ubuntu
 WORKSPACE=$PWD
 #1. Basic dependencies
@@ -16,7 +18,8 @@ wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz
 tar xaf boost_1_67_0.tar.gz
 cd boost_1_67_0
 ./bootstrap.sh  --with-libraries=python,thread,filesystem,iostreams,regex,serialization,system,date_time link=shared runtime-link=shared --without-icu 
-./b2 −j3
+#./b2 −j3 #compile with 3 threads
+./b2
 ./b2 install --prefix=$PWD/../HeaderLib
 
 #4. Minieigen
