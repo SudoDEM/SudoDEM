@@ -42,14 +42,16 @@ make install
 #5. LibQGLViewer-2.6.3
 cd $WORKSPACE
 wget https://github.com/SwaySZ/libQGLViewer-2.6.3/archive/2.6.3.tar.gz
+tar xzf 2.6.3.tar.gz
 cd libQGLViewer-2.6.3-2.6.3/QGLViewer
 qmake 
 make
-
+make install
 #cp all dynamic libraries into a folder '3rdlibs'.
 cd $WORKSPACE
 cp -rf HeaderLib/lib/*.so* 3rdlibs/*
-mv 3rdlibs/py/lib/minieigen.so 3rdlibs/py/minieigen.so
+cp HeaderLib/lib/py/lib/minieigen.so 3rdlibs/py/minieigen.so
+
 #IPython 3.0
 wget https://github.com/SwaySZ/IPython/archive/3.0.tar.gz
 tar xzf 3.0.tar.gz
