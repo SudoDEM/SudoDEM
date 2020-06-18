@@ -49,7 +49,7 @@ make
 make install
 #cp all dynamic libraries into a folder '3rdlibs'.
 cd $WORKSPACE
-cp -rf HeaderLib/lib/*.so* 3rdlibs/*
+cp -rf HeaderLib/lib/*.so* 3rdlibs/
 cp HeaderLib/lib/py/lib/minieigen.so 3rdlibs/py/minieigen.so
 
 #IPython 3.0

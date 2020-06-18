@@ -9,9 +9,9 @@
 #include<boost/date_time/posix_time/posix_time.hpp>
 #endif
 
-#include<sudodem/../3rdlib/libQGLViewer-2.6.3/QGLViewer/qglviewer.h>
-#include<sudodem/../3rdlib/libQGLViewer-2.6.3/QGLViewer/manipulatedFrame.h>
-#include<sudodem/../3rdlib/libQGLViewer-2.6.3/QGLViewer/constraint.h>
+#include<sudodem/lib/QGLViewer/qglviewer.h>
+#include<sudodem/lib/QGLViewer/manipulatedFrame.h>
+#include<sudodem/lib/QGLViewer/constraint.h>
 
 #include <qglobal.h>
 
