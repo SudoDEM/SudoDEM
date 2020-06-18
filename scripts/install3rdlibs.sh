@@ -26,7 +26,7 @@ cd boost_1_67_0
 #get the eigen source first
 cd $WORKSPACE
 wget http://bitbucket.org/eigen/eigen/get/3.3.5.tar.bz2
-tar xzf 3.3.5.tar.bz2
+tar xf 3.3.5.tar.bz2
 mv eigen-eigen-b3f3d4950030 Eigen-3.3.5
 #get the minieigen source
 wget https://github.com/SwaySZ/minieigen/archive/minieigen-1.0.tar.gz
@@ -50,6 +50,6 @@ cd $WORKSPACE
 cp -rf HeaderLib/lib 3rdlibs
 mv 3rdlibs/py/lib/minieigen.so 3rdlibs/py/minieigen.so
 #IPython 3.0
-wget https://github.com/SwaySZ/IPython/blob/master/IPython.tar.gz
-tar xzf IPython.tar.gz
-cp -rf IPython 3rdlibs/py/IPython
+wget https://github.com/SwaySZ/IPython/archive/3.0.tar.gz
+tar xzf 3.0.tar.gz
+cp -rf IPython-3.0 3rdlibs/py/IPython
