@@ -24,7 +24,7 @@ void Cell::integrateAndUpdate(Real dt){
 		// sin between axes is cos of skew
 		//_cos=(Hnorm.col(0).cross(Hnorm.col(1))).squaredNorm();
 		//_cos=1 - pow(Hnorm.col(0).dot(Hnorm.col(1)),2);
-		_cos=sqrt(1.0 - pow(Hnorm.col(0).dot(Hnorm.col(1)),2);//sin of the angle between the two basises
+		_cos=sqrt(1.0 - pow(Hnorm.col(0).dot(Hnorm.col(1)),2));//sin of the angle between the two basises
 	// pure shear trsf: ones on diagonal
 	_shearTrsf=Hnorm;
 	// pure unshear transformation
