@@ -217,7 +217,8 @@ void Bo1_Superellipse_Aabb::go(const shared_ptr<Shape>& ig, shared_ptr<Bound>& b
 	Vector2r refHalfSize(halfsize);
 	const Real& _cos=scene->cell->getCos();
 		//cerr<<"cos["<<i<<"]"<<cos[i]<<" ";
-		halfsize+=.5*refHalfSize*(1/_cos-1);
+		//halfsize+=.5*refHalfSize*(1/_cos-1);
+		halfsize = refHalfSize/_cos;
 	}
 	//cerr<<" || "<<halfSize<<endl;
 	aabb->min = scene->cell->unshearPt(se2.position)-halfsize;

@@ -27,7 +27,8 @@ void Bo1_Disk_Aabb::go(const shared_ptr<Shape>& cm, shared_ptr<Bound>& bv, const
 		Vector2r refHalfSize(halfSize);
 		const Real& _cos=scene->cell->getCos();
 			//cerr<<"cos["<<i<<"]"<<cos[i]<<" ";
-			halfSize+=.5*refHalfSize*(1/_cos-1);
+			//halfSize+=.5*refHalfSize*(1/_cos-1);
+			halfSize = refHalfSize/_cos;
 		}
 	//cerr<<" || "<<halfSize<<endl;
 	aabb->min = scene->cell->unshearPt(se2.position)-halfSize;
