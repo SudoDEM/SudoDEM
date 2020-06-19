@@ -5,8 +5,8 @@ WORKSPACE=$PWD
 mkdir build2d
 cd build2d
 cmake ../SudoDEM2D
-make
-#make -j3 #use 3 threads to compile
+#make
+make -j3 #use 3 threads to compile
 make install
 #the compiled files will be install at `sudodeminstall/SudoDEM2D/'.
 #copy the dynamic files `3rdlibs' into `sudodeminstall/SudoDEM2D/lib/'

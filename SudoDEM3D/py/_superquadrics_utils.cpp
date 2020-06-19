@@ -17,10 +17,11 @@
 #include <chrono> //test function running time
 
 //quasi-random numbers for Monte Carlo //boost 1.70, random
+#ifdef BOOST170
 #include <boost/random/sobol.hpp>
 #include <boost/random/uniform_01.hpp>
 #include <boost/random/variate_generator.hpp>
-
+#endif
 
 using namespace std::chrono;
 namespace py = boost::python;
@@ -173,6 +174,7 @@ void Superquadrics_test(Vector6r rxyz, Vector2r eps, Vector2r phi){
   cout<<"phi="<<phi<<"normal="<<normal<<endl;
   cout<<"pos3="<<pos3<<endl;
 }
+#ifdef BOOST170
 std::vector<double> MonteCarlo_test(Vector6r rxyz, Vector2r eps,long int num_max = 1000000){
   PolySuperellipsoid A = PolySuperellipsoid(eps,rxyz);
   double v1 = A.getVolume();
@@ -245,6 +247,7 @@ std::vector<double> MonteCarlo_test(Vector6r rxyz, Vector2r eps,long int num_max
   }
   return data;
 }
+#endif
 shared_ptr<Body> NewSuperquadrics(double x, double y, double z, double ep1, double ep2, shared_ptr<Material> mat,bool rotate){
 	shared_ptr<Body> body(new Body);
 	body->material=mat;
@@ -1251,7 +1254,7 @@ BOOST_PYTHON_MODULE(_superquadrics_utils){
     py::def("Superquadrics_test",Superquadrics_test,"test the computation of points on a superquadric given a normal vector.");
     py::def("PositionPB",PositionPB,"generate a pair of particles for test.");
     py::def("EST_Support",EST_Support,"Estimate the time consumption of the support function for a particle. For test only.");
-    py::def("MonteCarlo_test",MonteCarlo_test,(py::args("num_max")=1000000),"test the computation of particle geometric quantities (volume, mass center, and moment of inertia) by MonteCarlo simulation.");
+    //py::def("MonteCarlo_test",MonteCarlo_test,(py::args("num_max")=1000000),"test the computation of particle geometric quantities (volume, mass center, and moment of inertia) by MonteCarlo simulation.");
     py::def("outputWalls", outputWalls, "output positions of walls.");
     py::def("getSurfArea", getSurfArea, "getSurfArea(id,w,h): get the surface area of a super-ellipsoid by a given particle id with resolution w and h (e.g., w=10,h=10). Larger w and h will yield more accurate results.");
     py::def("outputParticles", outputParticles, "output particles.");
