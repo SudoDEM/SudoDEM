@@ -15,7 +15,7 @@
  #  This program is distributed in the hope that it will be useful,
  #  but WITHOUT ANY WARRANTY; without even the implied warranty of
  #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- #  Lesser General Public License for more details.
+ #  General Public License for more details.
  #
  #  You should have received a copy of the GNU General Public
  #  License along with this library; if not, write to the Free Software
@@ -39,7 +39,7 @@ cube_v = [[i*0.01 for i in j] for j in cube_v0]
 ########define some parameters#################
 isSphere=False
 
-declineAngle = 30.0/180.0*math.pi
+inclineAngle = 30.0/180.0*math.pi
 R = 0.01
 
 fname = 'state.dat'
@@ -68,13 +68,13 @@ O.materials.append(wallmat_b)
 O.bodies.append(utils.wall(0,axis=2,sense=1, material =wallmat_b))#bottom wall along z axis
 
 body = GJKCuboid([0.005,0.005,0.005],0.05*1e-2,p_mat,False)
-gra = 1e-6*2650*9.8*math.cos(declineAngle)/1e5
+gra = 1e-6*2650*9.8*math.cos(inclineAngle)/1e5
 body.state.pos=[0.0,0.0,0.005-gra]
 O.bodies.append(body)
 O.bodies[-1].shape.color=(rand.random(),rand.random(),rand.random())
 
 
-newton=NewtonIntegrator(damping = 0.0,gravity=(9.8*math.sin(declineAngle),0.0,-9.8*math.cos(declineAngle)),label="newton",isSuperquadrics=4)
+newton=NewtonIntegrator(damping = 0.0,gravity=(9.8*math.sin(inclineAngle),0.0,-9.8*math.cos(inclineAngle)),label="newton",isSuperquadrics=4)
 
 
 O.engines=[
