@@ -26,9 +26,12 @@ cd boost_1_67_0
 #4. Minieigen
 #get the eigen source first
 cd $WORKSPACE
-wget http://bitbucket.org/eigen/eigen/get/3.3.5.tar.bz2
-tar xf 3.3.5.tar.bz2
-mv eigen-eigen-b3f3d4950030 Eigen-3.3.5
+#wget http://bitbucket.org/eigen/eigen/get/3.3.5.tar.bz2 #this link was broken
+#tar xf 3.3.5.tar.bz2
+#mv eigen-eigen-b3f3d4950030 Eigen-3.3.5
+wget https://github.com/eigenteam/eigen-git-mirror/archive/3.3.5.tar.gz
+tar xzf 3.3.5.tar.gz
+mv eigen-git-mirror-3.3.5 Eigen-3.3.5
 #get the minieigen source
 wget https://github.com/SwaySZ/minieigen/archive/minieigen-1.0.tar.gz
 tar xzf minieigen-1.0.tar.gz 
