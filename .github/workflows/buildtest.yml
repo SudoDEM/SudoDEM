@@ -31,8 +31,8 @@ jobs:
 
   buildSudoDEM2D:
     runs-on: ubuntu-18.04
-    paths:
-      - SudoDEM2D/**
+    # paths:
+    #   - SudoDEM2D/**
     needs: [build3rdlibs]
     steps:
     - name: Collect 3rdlibs
