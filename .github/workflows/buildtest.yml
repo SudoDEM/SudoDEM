@@ -13,7 +13,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build3rdlibs:
+  buildSudoDEM2D:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
@@ -24,80 +24,12 @@ jobs:
         cd scripts
         sh install3rdlibs.sh
 
-    - name: upload 3rdlibs
-      uses: actions/upload-artifact@v2
-      with:
-        path: 3rdlib/*
-
-  buildSudoDEM2D:
-    runs-on: ubuntu-18.04
-    # paths:
-    #   - SudoDEM2D/**
-    needs: [build3rdlibs]
-    steps:
-    - name: Collect 3rdlib
-      uses: actions/download-artifact@v2
-      with:
-        name: 3rdlib
-        path: 3rdlib
     - name: compile SudoDEM2D
       shell: bash
       run: |
         sh firstCompile_SudoDEM2D.sh
 
-
-  # buildSudoDEM2D:
-  #   runs-on: ubuntu-18.04
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - uses: actions/setup-python@v2
-  #     with:
-  #       python-version: 2.7*
-  #   - name: Basic dependencies
-  #     run: |
-  #       apt install build-essential cmake freeglut3-dev zlib1g-dev python-dev qt4-default libbz2-dev libxi-dev libglib2.0-dev libxmu-dev
-
-  #   - name: Python modules
-  #     run: apt install python-numpy python-tk python-xlib python-qt4 
-    
-  #   - name: Boost
-  #     run: |
-  #       wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz
-  #       tar xaf boost_1_67_0.tar.gz
-  #       cd boost_1_67_0
-  #       ./bootstrap.sh  --with-libraries=python,thread,filesystem,iostreams,regex,serialization,system,date_time link=shared runtime-link=shared --without-icu 
-  #       ./b2 −j3
-  #       ./b2 install --prefix=$PWD/../HeaderLib
-
-  #   - name: Minieigen
-  #     run: |
-  #       wget http://bitbucket.org/eigen/eigen/get/3.3.5.tar.bz2
-  #       tar xaf 3.3.5.tar.bz2
-  #       mv eigen-eigen-b3f3d4950030 Eigen-3.3.5
-  #       wget https://github.com/SwaySZ/minieigen/archive/minieigen-1.0.tar.gz
-  #       tar xaf minieigen-1.0.tar.gz
-  #       cd minieigen-minieigen-1.0
-  #       mkdir build
-  #       cd build
-  #       cmake .. -DCMAKE_INSTALL_PREFIX=../../HeaderLib/lib/py
-  #       make
-  #       make install
-  #   - name: LibQGLViewer-2.6.3
-  #     run: |
-  #       wget https://github.com/SwaySZ/libQGLViewer-2.6.3/archive/2.6.3.tar.gz
-  #       cd libQGLViewer-2.6.3-2.6.3/QGLViewer
-  #       qmake
-  #       make
-  #   - name: cp all dynamic libraries into a folder '3rdlibs'
-  #     run: |
-  #       cp -rf HeaderLib/lib 3rdlibs
-  #       mv 3rdlibs/py/lib/minieigen.so 3rdlibs/py/minieigen.so
-    
-  #   - name: Compile SudoDEM2D
-  #       run: |
-  #         mkdir build2d
-  #         cd build2d
-  #         cmake ../SudoDEM2D
-  #         make -j3
-  #         make install
-  #
+    - name: upload compiled SudoDEM2D
+      uses: actions/upload-artifact@v2
+      with:
+        path: sudodeminstall/*
