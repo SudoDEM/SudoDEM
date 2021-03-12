@@ -26,8 +26,8 @@ jobs:
 
     - name: upload 3rdlibs
       uses: actions/upload-artifact@v2
-        with:
-          path: 3rdlibs/*
+      with:
+        path: 3rdlibs/*
 
   buildSudoDEM2D:
     runs-on: ubuntu-18.04
