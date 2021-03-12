@@ -1,0 +1,36 @@
+name: Build SudoDEM2D
+
+on:
+  #push:
+    #branches: [ci]
+
+  pull_request:
+    branches: [master]
+    paths:
+      - SudoDEM2D/**
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  buildSudoDEM2D:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: compile 3rdlibs
+      shell: bash
+      run: |
+        cd scripts
+        sh install3rdlibs.sh
+
+    - name: compile SudoDEM2D
+      shell: bash
+      run: |
+        cd scripts
+        sh firstCompile_SudoDEM2D.sh
+
+    - name: upload compiled SudoDEM2D
+      uses: actions/upload-artifact@v2
+      with:
+        path: sudodeminstall/*
