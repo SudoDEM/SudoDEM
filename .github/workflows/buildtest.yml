@@ -27,6 +27,7 @@ jobs:
     - name: compile SudoDEM2D
       shell: bash
       run: |
+        cd scripts
         sh firstCompile_SudoDEM2D.sh
 
     - name: upload compiled SudoDEM2D
