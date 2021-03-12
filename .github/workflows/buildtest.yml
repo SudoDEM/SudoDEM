@@ -27,7 +27,7 @@ jobs:
     - name: upload 3rdlibs
       uses: actions/upload-artifact@v2
       with:
-        path: 3rdlibs/*
+        path: 3rdlib/*
 
   buildSudoDEM2D:
     runs-on: ubuntu-18.04
@@ -35,11 +35,11 @@ jobs:
     #   - SudoDEM2D/**
     needs: [build3rdlibs]
     steps:
-    - name: Collect 3rdlibs
+    - name: Collect 3rdlib
       uses: actions/download-artifact@v2
       with:
-        name: 3rdlibs
-        path: 3rdlibs
+        name: 3rdlib
+        path: 3rdlib
     - name: compile SudoDEM2D
       shell: bash
       run: |
