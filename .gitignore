@@ -2,3 +2,4 @@
 3rdlib
 build*
 sudodeminstall
+.github/workflows/buildtest.yml
