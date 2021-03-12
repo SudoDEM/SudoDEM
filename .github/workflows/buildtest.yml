@@ -37,9 +37,9 @@ jobs:
     steps:
     - name: Collect 3rdlibs
       uses: actions/download-artifact@v2
-        with:
-          name: 3rdlibs
-          path: 3rdlibs
+      with:
+        name: 3rdlibs
+        path: 3rdlibs
     - name: compile SudoDEM2D
       shell: bash
       run: |
