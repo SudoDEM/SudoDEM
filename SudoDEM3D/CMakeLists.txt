@@ -1,29 +1,12 @@
-# The SUDODEM has the following parameters to configure:
-#  INSTALL_PREFIX: path, where SudoDEM will be installed (/usr/local by default)
-#  LIBRARY_OUTPUT_PATH: path to install libraries (lib by default)
-#  DEBUG: compile in debug-mode (OFF by default)
-#  CMAKE_VERBOSE_MAKEFILE: output additional information during compiling (OFF by default)
-#  SUFFIX: suffix, added after binary-names (version number by default)
-#  NOSUFFIX: do not add a suffix after binary-name (OFF by default)
-#  SUDODEM_VERSION: explicitely set version number (is defined from git-directory by default)
-#  ENABLE_GUI: enable GUI option (ON by default)
-#  ENABLE_OPENMP: enable OpenMP-parallelizing option (ON by default)
-#  runtimePREFIX: used for packaging, when install directory is not the same is runtime directory (/usr/local by default)
-#  CHUNKSIZE: set >1, if you want several sources to be compiled at once. Increases compilation speed and RAM-consumption during it (1 by default).
-#  VECTORIZE: enables vectorization and alignment in Eigen3 library, experimental (OFF by default)
-
 project(sudoDEM C CXX)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
-set(Python_ADDITIONAL_VERSIONS 2.7)
-#INCLUDE(FindPythonLibs)
-#INCLUDE(FindPythonInterp)
-find_package( PythonInterp 2.7 REQUIRED )
-find_package( PythonLibs 2.7 REQUIRED)
+set(Python_ADDITIONAL_VERSIONS 3.8)
+find_package( PythonInterp 3.8 REQUIRED )
+find_package( PythonLibs 3.8 REQUIRED)
 
 INCLUDE(FindOpenMP)
-INCLUDE(FindQt4)
 INCLUDE(FindPkgConfig)
 INCLUDE(GetVersion)
 INCLUDE(FindOpenGL)
@@ -81,36 +64,22 @@ ELSE (CMAKE_CXX_FLAGS)
     SET(CMAKE_CXX_FLAGS  "-Wall -fPIC -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Wformat-security -Werror=format-security -s")
   ENDIF (DEBUG)
 ENDIF (CMAKE_CXX_FLAGS)
-#===========================================================
-# Add possibility to use local boost installation (e.g. -DLocalBoost=1.46.1)
-#set(CMAKE_MODULE_PATH "/scratch/softwares/boostinstall/lib/;${CMAKE_MODULE_PATH}")
-set(Boost_NO_SYSTEM_PATHS TRUE)
-#if (Boost_NO_SYSTEM_PATHS)
-  set(BOOST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/HeaderLib")
-  set(BOOST_INCLUDE_DIRS "${BOOST_ROOT}/include")
-  set(BOOST_LIBRARY_DIRS "${BOOST_ROOT}/lib")
-  #set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib")
-  #set(BOOST_LIBRARYDIR "/opt/SudoDEM/lib/3rdlibs/")
 
-
-#endif (Boost_NO_SYSTEM_PATHS)
-FIND_PACKAGE(Boost 1.67 COMPONENTS python27 thread filesystem iostreams regex serialization system date_time REQUIRED)
-#FIND_PACKAGE(Boost COMPONENTS python thread filesystem iostreams regex serialization system date_time REQUIRED PATHS ${BOOST_LIBRARYDIR} NO_DEFAULT_PATH)
-
-#set(Boost_LIBRARIES "-lboost_python -lboost_thread -lboost_filesystem -lboost_iostreams -lboost_regex -lboost_serialization -lboost_system -lboost_date_time -lpthread") #"/home/sway/software/DEM/3rdlib/boost159/lib/libboost_python.so/home/sway/software/DEM/3rdlib/boost159/lib/libboost_thread.so/home/sway/software/DEM/3rdlib/boost159/lib/libboost_filesystem.so/home/sway/software/DEM/3rdlib/boost159/lib/libboost_iostreams.so/home/sway/software/DEM/3rdlib/boost159/lib/libboost_regex.so/home/sway/software/DEM/3rdlib/boost159/lib/libboost_serialization.so/home/sway/software/DEM/3rdlib/boost159/lib/libboost_system.so/home/sway/software/DEM/3rdlib/boost159/lib/libboos#t_date_time.so/usr/lib/x86_64-linux-gnu/libpthread.so")
-#set(Boost_LIBRARIES "${BOOST_LIBRARY_DIRS}libboost_python.so${BOOST_LIBRARY_DIRS}libboost_thread.so${BOOST_LIBRARY_DIRS}libboost_filesystem.so${BOOST_LIBRARY_DIRS}libboost_iostreams.so${BOOST_LIBRARY_DIRS}libboost_regex.so${BOOST_LIBRARY_DIRS}libboost_serialization.so${BOOST_LIBRARY_DIRS}libboost_system.so${BOOST_LIBRARY_DIRS}libbost_date_time.so")
-INCLUDE_DIRECTORIES (${Boost_INCLUDE_DIRS})
-#LINK_DIRECTORIES( ${BOOST_LIBRARYDIR} )
-# for checking purpose
-MESSAGE("--   Boost_VERSION: " ${Boost_VERSION})
-MESSAGE("--   Boost_LIB_VERSION: " ${Boost_LIB_VERSION})
-MESSAGE("--   BOOST_LIBRARYDIR: " ${BOOST_LIBRARYDIR})
-MESSAGE("--   Boost_INCLUDE_DIRS: " ${Boost_INCLUDE_DIRS})
-MESSAGE("--   Boost_LIBRARIES: " ${Boost_LIBRARIES})
+#=======================  BOOST LIBRARY  =======================#  
+set(BOOST_NO_SYSTEM_PATHS TRUE)
+set(BOOST_ROOT "/home/mango/softs/boost_3")
+set(BOOST_INCLUDE_DIRS "${BOOST_ROOT}/include")
+set(BOOST_LIBRARY_DIRS "${BOOST_ROOT}/lib")
+set(BOOST_LIBRARIES "-lboost_python38 -lboost_thread -lboost_filesystem -lboost_iostreams -lboost_regex -lboost_serialization -lboost_system -lboost_date_time -lpthread")
+INCLUDE_DIRECTORIES (${BOOST_INCLUDE_DIRS})
+LINK_DIRECTORIES( ${BOOST_LIBRARY_DIRS} )
+MESSAGE(STATUS "BOOST_LIBRARYDIR: " ${BOOST_LIBRARY_DIRS})
+MESSAGE(STATUS "BOOST_INCLUDE_DIRS: " ${BOOST_INCLUDE_DIRS})
+MESSAGE(STATUS "BOOST_LIBRARIES: " ${BOOST_LIBRARIES})
 
 #===========================================================
 FIND_PACKAGE(NumPy REQUIRED)
-  INCLUDE_DIRECTORIES(${NUMPY_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${NUMPY_INCLUDE_DIRS})
 
 FIND_PACKAGE(BZip2 REQUIRED)
 FIND_PACKAGE(ZLIB REQUIRED)
@@ -125,91 +94,73 @@ OPTION(NOSUFFIX "NOSUFFIX" ON)
 OPTION(ENABLE_OPENMP "Enable OpenMP" ${DEFAULT})
 OPTION(ENABLE_GUI "Enable GUI" ${DEFAULT})
 
-#===========================================================
-# Use Eigen3 by default
-# Use Eigen3 by default
-#IF (EIGEN3_FOUND)
-#set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/eigen-3.2.3/")
-set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/")
-  INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
-  MESSAGE(STATUS "Found Eigen3, at: ${EIGEN3_INCLUDE_DIR}")
+#=======================  EIGEN  =======================# 
+set(EIGEN3_INCLUDE_DIR "/home/mango/softs/Eigen")
+INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
+MESSAGE(STATUS "Found Eigen3, at: ${EIGEN3_INCLUDE_DIR}")
 
-  # Minimal required version 3.2.1
-  #IF ((${EIGEN3_MAJOR_VERSION} LESS 2) OR ((${EIGEN3_MAJOR_VERSION} EQUAL 2) AND (${EIGEN3_MINOR_VERSION} LESS 1)))
- #   MESSAGE(FATAL_ERROR "Minimal required Eigen3 version is 3.2.1, please update Eigen3!")
- # ENDIF ((${EIGEN3_MAJOR_VERSION} LESS 2) OR ((${EIGEN3_MAJOR_VERSION} EQUAL 2) AND (${EIGEN3_MINOR_VERSION} LESS 1)))
+IF (NOT VECTORIZE)
+  MESSAGE(STATUS "Disable vectorization")
+  ADD_DEFINITIONS("-DEIGEN_DONT_VECTORIZE -DEIGEN_DONT_ALIGN -DEIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT")
+ELSE (NOT VECTORIZE)
+  MESSAGE(STATUS "Enable vectorization")
+ENDIF (NOT VECTORIZE)
 
-  IF (NOT VECTORIZE)
-    MESSAGE(STATUS "Disable vectorization")
-    ADD_DEFINITIONS("-DEIGEN_DONT_VECTORIZE -DEIGEN_DONT_ALIGN -DEIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT")
-  ELSE (NOT VECTORIZE)
-    MESSAGE(STATUS "Enable vectorization")
-  ENDIF (NOT VECTORIZE)
-
-#ENDIF(EIGEN3_FOUND)
 #===========================================================
 INCLUDE_DIRECTORIES(${BZIP2_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIRS})
 SET(LINKLIBS  "${LINKLIBS};${BZIP2_LIBRARIES};${ZLIB_LIBRARIES};")
+
 #===========================================================
-#IF((Boost_MAJOR_VERSION EQUAL 1) OR (Boost_MAJOR_VERSION GREATER 1) AND
-#  ((Boost_MINOR_VERSION EQUAL 53) OR (Boost_MINOR_VERSION GREATER 53)))
-  SET(CONFIGURED_FEATS "${CONFIGURED_FEATS} Odeint")
-  ADD_DEFINITIONS("-DSUDODEM_ODEINT")
-#ELSE((Boost_MAJOR_VERSION EQUAL 1) OR (Boost_MAJOR_VERSION GREATER 1) AND
-#    ((Boost_MINOR_VERSION EQUAL 53) OR (Boost_MINOR_VERSION GREATER 53)))
-#  SET(DISABLED_FEATS "${DISABLED_FEATS} Odeint")
-#  MESSAGE(STATUS "Boost Odeint can be enabled, only if Boost>=1.53 is used")
-#ENDIF((Boost_MAJOR_VERSION EQUAL 1) OR (Boost_MAJOR_VERSION GREATER 1) AND
-#     ((Boost_MINOR_VERSION EQUAL 53) OR (Boost_MINOR_VERSION GREATER 53)))
-#===========================================================
-#===========================================================
-IF(ENABLE_OPENMP)
-  FIND_PACKAGE(OpenMP)
-  IF(OPENMP_FOUND)
+SET(CONFIGURED_FEATS "${CONFIGURED_FEATS} Odeint")
+ADD_DEFINITIONS("-DSUDODEM_ODEINT")
+
+FIND_PACKAGE(OpenMP)
+IF(OPENMP_FOUND)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSUDODEM_OPENMP ${OpenMP_CXX_FLAGS}")
     MESSAGE(STATUS "Found OpenMP")
     SET(CONFIGURED_FEATS "${CONFIGURED_FEATS} OpenMP")
-  ELSE(OPENMP_FOUND)
+ELSE(OPENMP_FOUND)
     MESSAGE(STATUS "OpenMP NOT found")
     SET(ENABLE_OPENMP OFF)
     SET(DISABLED_FEATS "${DISABLED_FEATS} OPENMP")
-  ENDIF(OPENMP_FOUND)
-ELSE(ENABLE_OPENMP)
-  SET(DISABLED_FEATS "${DISABLED_FEATS} OPENMP")
-ENDIF(ENABLE_OPENMP)
-#===========================================================
+ENDIF(OPENMP_FOUND)
 
 #===========================================================
+
+#=======================  QT5  ====================================
+MESSAGE(STATUS "Enable GUI: " ${ENABLE_GUI})
 IF(ENABLE_GUI)
-  FIND_PACKAGE(Qt4 COMPONENTS QtCore QtGui QtOpenGL)
+  FIND_PACKAGE(Qt5 CONFIG REQUIRED Widgets Xml OpenGL)
+  SET(QGLVIEWER_FOUND TRUE)
+  FIND_PACKAGE(Qt5Widgets)
   FIND_PACKAGE(OpenGL)
   FIND_PACKAGE(GLUT)
-
   FIND_PACKAGE(glib2)
-  #FIND_PACKAGE(QGLVIEWER)
-  set(QGLVIEWER_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/HeaderLib")
- set(QGLVIEWER_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/HeaderLib/lib/libQGLViewer.so")
- #set(QGLVIEWER_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/libQGLViewer-2.6.3/QGLViewer/libQGLViewer.a")#using static library
-  SET(QGLVIEWER_FOUND TRUE)
-   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQGLVIEWER_FOUND")
-SET(LINKLIBS  "${LINKLIBS};${QGLVIEWER_LIBRARIES}")
 
-  IF(QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND GLIB2_FOUND AND QGLVIEWER_FOUND)
-    SET(GUI_LIBS ${GLUT_LIBRARY} ${OPENGL_LIBRARY} ${QGLVIEWER_LIBRARIES})
+
+  set(QGLVIEWER_INCLUDE_DIR "/home/mango/softs/qglviewer/include")
+  INCLUDE_DIRECTORIES(${QGLVIEWER_INCLUDE_DIR})
+  set(QGLVIEWER_LIBRARIES "/home/mango/softs/qglviewer/lib/libQGLViewer.so.2.6.3")
+  SET(QGLVIEWER_FOUND TRUE)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQGLVIEWER_FOUND")
+  SET(LINKLIBS  "${LINKLIBS};${QGLVIEWER_LIBRARIES}")
+
+  IF(Qt5Widgets_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND GLIB2_FOUND AND QGLVIEWER_FOUND)
+    SET(GUI_LIBS ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} ${QGLVIEWER_LIBRARIES})
     SET(GUI_SRC_LIB "lib/opengl/GLUtils.cpp")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSUDODEM_OPENGL")
-    INCLUDE_DIRECTORIES(${GLIB2_INCLUDE_DIRS})
-    INCLUDE_DIRECTORIES(${QT_INCLUDES})
+    #INCLUDE_DIRECTORIES(${GLIB2_INCLUDE_DIRS})
+    #INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
     MESSAGE(STATUS "Found GUI-LIBS")
     SET(CONFIGURED_FEATS "${CONFIGURED_FEATS} GUI")
-  ELSE(QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND GLIB2_FOUND AND QGLVIEWER_FOUND)
+  ELSE(Qt5Widgets_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND GLIB2_FOUND AND QGLVIEWER_FOUND)
     MESSAGE(STATUS "GUI-LIBS NOT found")
-    MESSAGE(STATUS "qt4 ${QT4_FOUND} opengl${OPENGL_FOUND} glut  ${GLUT_FOUND} glib2 ${GLIB2_FOUND} qglviewer ${QGLVIEWER_FOUND}")
+    MESSAGE(STATUS "qt5 ${QT5Widgets_FOUND} opengl ${OPENGL_FOUND} glut  ${GLUT_FOUND} glib2 ${GLIB2_FOUND} qglviewer ${QGLVIEWER_FOUND}")
     SET(DISABLED_FEATS "${DISABLED_FEATS} GUI")
     SET(ENABLE_GUI OFF)
-  ENDIF(QT4_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND GLIB2_FOUND AND QGLVIEWER_FOUND)
+  ENDIF(Qt5Widgets_FOUND AND OPENGL_FOUND AND GLUT_FOUND AND GLIB2_FOUND AND QGLVIEWER_FOUND)
 ELSE(ENABLE_GUI)
   SET(DISABLED_FEATS "${DISABLED_FEATS} GUI")
 ENDIF(ENABLE_GUI)
@@ -229,57 +180,24 @@ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR})
 #ENDIF((Boost_MINOR_VERSION LESS 47) AND (Boost_MAJOR_VERSION EQUAL 1))
 
 #===========================================================
+SET(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/sudodeminstall")
+MESSAGE(STATUS "SudoDEM will be installed to ${CMAKE_INSTALL_PREFIX}")
 
-IF (NOT INSTALL_PREFIX)
- #SET(CMAKE_INSTALL_PREFIX "/usr/local")
- SET(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/../sudodeminstall/SudoDEM3D")
- MESSAGE("SudoDEM will be installed to default path ${CMAKE_INSTALL_PREFIX}, if you want to override it use -DINSTALL_PREFIX option.")
-ELSE (NOT INSTALL_PREFIX)
-	GET_FILENAME_COMPONENT(CMAKE_INSTALL_PREFIX ${INSTALL_PREFIX} ABSOLUTE)
-	MESSAGE("SudoDEM will be installed to ${CMAKE_INSTALL_PREFIX}")
-ENDIF (NOT INSTALL_PREFIX)
-
-IF (NOT SUFFIX)
-  SET (SUFFIX "-${SUDODEM_VERSION}")
-  #SET (SUFFIX "")
-ENDIF (NOT SUFFIX)
-
-IF(NOSUFFIX)   #For packaging
-  SET (SUFFIX "")
-ENDIF(NOSUFFIX)   #For packaging
-SET (LIBRARY_OUTPUT_PATH lib)
-IF(NOT LIBRARY_OUTPUT_PATH)   #For packaging
-  SET (LIBRARY_OUTPUT_PATH ${CMAKE_INSTALL_LIBDIR})
-ENDIF(NOT LIBRARY_OUTPUT_PATH)   #For packaging
-
-IF (NOT runtimePREFIX)
-  SET (runtimePREFIX ${CMAKE_INSTALL_PREFIX})
-ENDIF (NOT runtimePREFIX)
-
-MESSAGE (STATUS "Suffix is set to " ${SUFFIX})
-MESSAGE (STATUS "LIBRARY_OUTPUT_PATH is set to " ${LIBRARY_OUTPUT_PATH})
-MESSAGE (STATUS "runtimePREFIX is set to " ${runtimePREFIX})
 #===========================================================
-
-#SET(SUDODEM_LIB_PATH ${CMAKE_INSTALL_PREFIX}/${LIBRARY_OUTPUT_PATH}/sudodem${SUFFIX})
-SET(SUDODEM_LIB_PATH ${CMAKE_INSTALL_PREFIX}/lib/sudodem${SUFFIX})
+SET(SUDODEM_LIB_PATH ${CMAKE_INSTALL_PREFIX}/lib/sudodem)
 SET(SUDODEM_EXEC_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR})
 SET(SUDODEM_PY_PATH ${SUDODEM_LIB_PATH}/py)
 SET(SUDODEM_DOC_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/doc/sudodem${SUFFIX})
 SET(SUDODEM_MAN_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_MANDIR})
 
 
-SET(CMAKE_SKIP_BUILD_RPATH FALSE)
 SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-#SET(CMAKE_INSTALL_RPATH "${SUDODEM_LIB_PATH};${SUDODEM_PY_PATH};${SUDODEM_PY_PATH}/sudodem/;${SUDODEM_PY_PATH}/sudodem/qt;${QGLVIEWER_INCLUDE_DIR}/QGLViewer")
-#SET(CMAKE_INSTALL_RPATH "${SUDODEM_LIB_PATH};${SUDODEM_PY_PATH};${SUDODEM_PY_PATH}/sudodem/;${SUDODEM_PY_PATH}/sudodem/qt;$ORIGIN/../../../../../3rdlibs")
-SET(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/../../;$ORIGIN/../../../3rdlibs")#this is specified to python modules in ${SUDODEM_PY_PATH}/sudodem/.
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-#SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
+
 #===========================================================
 IF(ENABLE_GUI)
-  ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/gui")
+    ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/gui")
 ENDIF(ENABLE_GUI)
 ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/py")
 #===========================================================
@@ -291,19 +209,16 @@ IF(NOT EXISTS "${CMAKE_BINARY_DIR}/sudodem")
 ENDIF ()
 #===========================================================
 
-#SET(QHULL_INCLUDE_DIR,"lib/")
-#MESSAGE(STATUS "Found QHULL: ${QHULL_INCLUDE_DIR}, ${QHULL_LIBRARIES}")
-#INCLUDE_DIRECTORIES(${QHULL_INCLUDE_DIR})
 
 FILE(GLOB QHULL_SRC_LIB "lib/qhull/*.c")
 ADD_LIBRARY(qhull SHARED ${QHULL_SRC_LIB})
-SET_TARGET_PROPERTIES(qhull PROPERTIES PREFIX "" INSTALL_RPATH "$ORIGIN;$ORIGIN/../3rdlibs/")
+SET_TARGET_PROPERTIES(qhull PROPERTIES PREFIX "")
 TARGET_LINK_LIBRARIES(qhull)
 INSTALL(TARGETS qhull DESTINATION ${SUDODEM_LIB_PATH})
 #===========================================================
 FILE(GLOB VORO_SRC_LIB "lib/voro++/voro++.cc")
 ADD_LIBRARY(voro++ SHARED ${VORO_SRC_LIB})
-SET_TARGET_PROPERTIES(voro++ PROPERTIES PREFIX "" INSTALL_RPATH "$ORIGIN;$ORIGIN/../3rdlibs/")
+SET_TARGET_PROPERTIES(voro++ PROPERTIES PREFIX "")
 TARGET_LINK_LIBRARIES(voro++)
 INSTALL(TARGETS voro++ DESTINATION ${SUDODEM_LIB_PATH})
 #===========================================================
@@ -330,6 +245,7 @@ IF (CHUNKSIZE)
 ELSE (CHUNKSIZE)
   ADD_LIBRARY(sudodem SHARED ${SRC_CORE} ${SRC_PKG} ${SRC_LIB})
 ENDIF (CHUNKSIZE)
+
 #===========================================================
 find_python_module(minieigen)
 IF (PY_minieigen)
@@ -337,39 +253,32 @@ IF (PY_minieigen)
 ELSE (PY_minieigen)
   MESSAGE(STATUS "Use embedded version of minieigen. Please, consider installing the corresponding package")
 ENDIF (PY_minieigen)
-IF (NOT CLUSTER)
-find_python_module(Tkinter REQUIRED)
-ENDIF (NOT CLUSTER)
+
+find_python_module(tkinter REQUIRED)
+
+
 #===========================================================
 
 
 ADD_EXECUTABLE(sudodem3d ${CMAKE_CURRENT_SOURCE_DIR}/core/main/sudodem.cpp)
-SET_TARGET_PROPERTIES(sudodem3d PROPERTIES INSTALL_RPATH "$ORIGIN;$ORIGIN/../lib/3rdlibs/;")
+SET_TARGET_PROPERTIES(sudodem3d PROPERTIES INSTALL_RPATH "$ORIGIN;$ORIGIN/../lib/sudodem/py/sudodem;")
 
 ADD_LIBRARY(boot SHARED ${CMAKE_CURRENT_SOURCE_DIR}/core/main/pyboot.cpp)
-SET_TARGET_PROPERTIES(boot PROPERTIES PREFIX "" LINK_FLAGS "-Wl,-z,origin,--as-needed" INSTALL_RPATH "$ORIGIN;$ORIGIN/../../;$ORIGIN/../../../3rdlibs;") #add -z,origin
-TARGET_LINK_LIBRARIES(sudodem qhull ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${LINKLIBS} -lrt)
+SET_TARGET_PROPERTIES(boot PROPERTIES PREFIX "" LINK_FLAGS "-Wl,-z,origin,--as-needed" INSTALL_RPATH "$ORIGIN;$ORIGIN/../../;") #add -z,origin
 
-MESSAGE("link libraries: " ${LINKLIBS})
-#TARGET_LINK_LIBRARIES(sudodem qhull -lboost_python -lboost_thread -lboost_filesystem -lboost_iostreams -lboost_regex -lboost_serialization -lboost_system -lboost_date_time -lpthread ${PYTHON_LIBRARIES} ${LINKLIBS} -lrt)
-#TARGET_LINK_LIBRARIES(sudodem qhull -L/opt/SudoDEM/lib/3rdlibslibboost_python.so libboost_thread.so libboost_filesystem.so libboost_iostreams.so libboost_regex.so libboost_serialization.so libboost_system.so libboost_date_time.so libthread.so ${PYTHON_LIBRARIES} ${LINKLIBS} -lrt)
-#SET_TARGET_PROPERTIES(sudodem  PROPERTIES LINK_FLAGS "-Wl,-z,origin,--as-needed" ) #add -z,origin
-SET_TARGET_PROPERTIES(sudodem  PROPERTIES LINK_FLAGS "-Wl,--as-needed" INSTALL_RPATH "$ORIGIN;$ORIGIN/../3rdlibs;$ORIGIN/../3rdlibs/py;$ORIGIN/py/sudodem/qt" )
+TARGET_LINK_LIBRARIES(sudodem qhull ${BOOST_LIBRARIES} ${PYTHON_LIBRARIES} ${LINKLIBS} -lrt)
+
+
+SET_TARGET_PROPERTIES(sudodem  PROPERTIES LINK_FLAGS "-Wl,--as-needed" INSTALL_RPATH "$ORIGIN;$ORIGIN/py/sudodem/qt" )
 TARGET_LINK_LIBRARIES(boot sudodem)
 
-TARGET_LINK_LIBRARIES(sudodem3d boot ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
+TARGET_LINK_LIBRARIES(sudodem3d boot ${BOOST_LIBRARIES} ${PYTHON_LIBRARIES})
 
 IF(ENABLE_GUI)
   TARGET_LINK_LIBRARIES(sudodem _GLViewer ${GUI_LIBS})
+  
 ENDIF(ENABLE_GUI)
 
-#====================================
-#IF (NOT (PY_minieigen))
-#  ADD_LIBRARY(miniEigen SHARED py/mathWrap/miniEigen.cpp)
-#  SET_TARGET_PROPERTIES(miniEigen PROPERTIES PREFIX "")
-#  TARGET_LINK_LIBRARIES(miniEigen ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
-# INSTALL(TARGETS miniEigen DESTINATION ${SUDODEM_PY_PATH})
-#ENDIF (NOT (PY_minieigen))
 
 #====================================
 #Back compatibility with scons

@@ -17,7 +17,7 @@
 #
 #    to the c++ documentation.
 
-import wrapper
+from sudodem import wrapper
 
 # Update docstring of your class/function like this:
 #

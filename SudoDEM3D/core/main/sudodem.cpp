@@ -58,10 +58,13 @@ int main( int argc, char **argv )
       std::string newPathValue = origPathValue + ":" + (exePath.branch_path().string());
       std::string libPathValue = (exePath.branch_path().string()) + "/../lib/sudodem/";
       libPathValue = libPathValue + ":" + (exePath.branch_path().string()) + "/../lib/sudodem/py";
+      libPathValue = libPathValue + ":" + (exePath.branch_path().string()) + "/../lib/sudodem/py/sudodem";
+      libPathValue = libPathValue + ":" + (exePath.branch_path().string()) + "/../lib/sudodem/py/sudodem/qt";
       libPathValue = libPathValue + ":" + (exePath.branch_path().string()) + "/../lib/3rdlibs/py";
       std::string libLDPathValue = (exePath.branch_path().string()) + "/../lib/3rdlibs/";
       //cout<<"the path = "<<exePath.string()<<endl;
       setenv("PATH", newPathValue.c_str(), 1);
+      //cout<<"Prefix: "<<prefix<<endl;
       setenv("PYTHONPATH",libPathValue.c_str(),1);
       setenv("LD_LIBRARY_PATH",libLDPathValue.c_str(),1);
       setenv("SUDODEM_PREFIX",prefix.c_str(),1);
@@ -134,7 +137,8 @@ int main( int argc, char **argv )
   std::vector<std::string> prg_feats((std::istream_iterator<std::string>(iss)),
                                  std::istream_iterator<std::string>());
 
-  Py_SetProgramName(argv[0]);  /* optional but recommended */
+  wchar_t* program = Py_DecodeLocale(argv[0], NULL);
+  Py_SetProgramName(program);  /* optional but recommended */
 
 
   //cout<<"omp_get_max_threads="<<omp_get_max_threads()<<endl;
@@ -205,11 +209,12 @@ if(!isGUI){
           // contrary to display.Display, _BaseDisplay does not check for extensions and that avoids spurious message "Xlib.protocol.request.QueryExtension" (bug?)
           "\t\tXlib.display._BaseDisplay();\n"
           "\t\tsudodem.runtime.hasDisplay=True\n"
+          //"\t\tprint(sudodem.runtime.hasDisplay)\n"
       "\texcept:\n"
           // usually Xlib.error.DisplayError, but there can be Xlib.error.XauthError etc as well
           // let's just pretend any exception means the display would not work
           "\t\tgui=None\n"
-          "\t\tprint 'Warning: no X rendering available'\n"
+          "\t\tprint('Warning: no X rendering available')\n"
   );
 }
 PyRun_SimpleString(
@@ -254,7 +259,8 @@ PyRun_SimpleString(
   //"\tprint ipconfig\n"
   //# show python console IPYTHON3.0 embeded
 	"\tfrom IPython.terminal.embed import InteractiveShellEmbed\n"
-	"\tfrom IPython.config.loader import Config\n"
+	//"\tfrom IPython.config.loader import Config\n"
+    "\tfrom traitlets.config.loader import Config\n"
 	"\tcfg = Config()\n"
 	"\tprompt_config = cfg.PromptManager\n"
 	"\tprompt_config.in_template = ipconfig['prompt_in1']\n"
@@ -274,10 +280,10 @@ PyRun_SimpleString(
     "elif gui=='qt4':\n"
         // we already tested that DISPLAY is available and can be opened
         // otherwise Qt4 might crash at this point
-        "\timport PyQt4\n"
-        "\tfrom PyQt4 import QtGui,QtCore\n"
+        "\timport PyQt5\n"
+        "\tfrom PyQt5 import QtGui,QtCore,QtWidgets\n"
         "\timport sudodem.qt\n"
-        "\tqapp=QtGui.QApplication(sys.argv)\n"
+        "\tqapp=QtWidgets.QApplication(sys.argv)\n"
         "\tsys.exit(userSession(qt4=True,qapp=qapp))\n"
       );
 
