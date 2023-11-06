@@ -245,15 +245,15 @@ PyRun_SimpleString(
     //"\tbanner='[[ Ctrl+L clears screen, Ctrl+U kills line. '+', '.join((['F12 controller','F11 3d view (use h-key for showing help)','F10 both','F9 generator'] if (qt4) else [])+['F8 plot'])+'. ]]'\n"
     //# ipython options, see e.g. http://www.cv.nrao.edu/~rreid/casa/tips/ipy_user_conf.py
     //#execfile=[prefix+'/lib/sudodem'+suffix+'/py/sudodem/ipython.py'],
-    "\tipconfig=dict(prompt_in1='SudoDEM [\\#]: ',prompt_in2='     .\\D.: ',prompt_out=' ->  [\\#]: ',\
-    separate_in='',separate_out='',separate_out2='',\
-    readline_parse_and_bind=['tab: complete',] +\
-    (['\"\\e[24~\": \"\\C-Usudodem.qt.Controller();\\C-M\"',\
-    '\"\\e[23~\": \"\\C-Usudodem.qt.View();\\C-M\"',\
-    '\"\\e[21~\": \"\\C-Usudodem.qt.Controller(), sudodem.qt.View();\\C-M\"',\
-    '\"\\e[20~\": \"\\C-Usudodem.qt.Generator();\\C-M\"'] if (qt4) else []) +\
-    ['\"\\e[19~\": \"\\C-Uimport sudodem.plot; sudodem.plot.plot();\\C-M\"', \
-     '\"\\e[A\": history-search-backward', '\"\\e[B\": history-search-forward'])\n"
+    //"\tipconfig=dict(prompt_in1='SudoDEM [\\#]: ',prompt_in2='     .\\D.: ',prompt_out=' ->  [\\#]: ',\
+    //separate_in='',separate_out='',separate_out2='',\
+    //readline_parse_and_bind=['tab: complete',] +\
+    //(['\"\\e[24~\": \"\\C-Usudodem.qt.Controller();\\C-M\"',\
+    //'\"\\e[23~\": \"\\C-Usudodem.qt.View();\\C-M\"',\
+    //'\"\\e[21~\": \"\\C-Usudodem.qt.Controller(), sudodem.qt.View();\\C-M\"',\
+    //'\"\\e[20~\": \"\\C-Usudodem.qt.Generator();\\C-M\"'] if (qt4) else []) +\
+    //['\"\\e[19~\": \"\\C-Uimport sudodem.plot; sudodem.plot.plot();\\C-M\"', \
+    // '\"\\e[A\": history-search-backward', '\"\\e[B\": history-search-forward'])\n"
      //#F12,F11,F10,F9,F8
   //"\tipconfig=dict(prompt_in1='SudoDEM [\\#]: ',prompt_in2='     .\\D.: ',prompt_out=' ->  [\\#]: ')\n"
   //"\tprint ipconfig\n"
@@ -261,17 +261,43 @@ PyRun_SimpleString(
 	"\tfrom IPython.terminal.embed import InteractiveShellEmbed\n"
 	//"\tfrom IPython.config.loader import Config\n"
     "\tfrom traitlets.config.loader import Config\n"
+    "\tfrom IPython.terminal.prompts import Prompts, Token\n"
+    //"\tbanner=\'[[ ^L clears screen, ^U kills line. \'+\', '.join(([\'\\033[1mF12\\033[0m controller\',\'\\033[1mF11\\033[0m 3D view (press \\033[4m\"h\"\\033[0m in 3D view for \\033[4mhelp\\033[0m)\',\'\\033[1mF10\\033[0m both\',\'\\033[1mF9\\033[0m generator\'] if (gui!=\'none\') else [])+[\'\\033[1mF8\\033[0m plot\'])+\'. ]]\'\n"
+    "\tbanner=\'\\nNote: Undefined behavior might be encountered when IPython < 5.0.\\n      Feel free to report any IPython bugs to https://github.com/SudoDEM/SudoDEM\'\n"
+    "\tclass CustomPrompt(Prompts):\n"
+    "\t\tdef in_prompt_tokens(self, cli=None):\n"
+    "\t\t\treturn[(Token.Prompt, \'SudoDEM [\'),\n"
+    "\t\t\t    (Token.PromptNum, str(self.shell.execution_count)),\n"
+    "\t\t\t    (Token.Prompt, \']: \'),\n"
+    "\t\t\t    ]\n"
+    "\t\tdef out_prompt_tokens(self):\n"
+    "\t\t\treturn[(Token.Prompt, \' ->  [\'),\n"
+    "\t\t\t    (Token.PromptNum, str(self.shell.execution_count)),\n"
+    "\t\t\t    (Token.Prompt, \']: \'),\n"
+    "\t\t\t    ]\n"
 	"\tcfg = Config()\n"
-	"\tprompt_config = cfg.PromptManager\n"
-	"\tprompt_config.in_template = ipconfig['prompt_in1']\n"
-	"\tprompt_config.in2_template = ipconfig['prompt_in2']\n"
-	"\tprompt_config.out_template = ipconfig['prompt_out']\n"
-	"\timport readline\n"
-	"\tfor k in ipconfig['readline_parse_and_bind']: readline.parse_and_bind(k)\n"
-	"\tInteractiveShellEmbed.config=cfg\n"
-	"\tInteractiveShellEmbed.banner1=''\n"
-	"\tipshell=InteractiveShellEmbed()\n"
-	"\tipshell()\n"
+	"\tcfg.TerminalInteractiveShell.prompts_class=CustomPrompt\n"
+	"\tipshell=InteractiveShellEmbed(config=cfg,banner1=banner+\'\\n\')\n"
+    "\tthiskeybind=ipshell.pt_app.key_bindings\n"
+    "\tfrom prompt_toolkit.keys import Keys\n"
+    "\t@thiskeybind.add_binding(Keys.F12, eager=True)\n"
+    "\tdef callctrl(event):\n"
+    "\t\tsudodem.qt.Controller()\n"
+    "\t@thiskeybind.add_binding(Keys.F11, eager=True)\n"
+    "\tdef callview(event):\n"
+    "\t\tsudodem.qt.View()\n"
+    "\t@thiskeybind.add_binding(Keys.F10, eager=True)\n"
+    "\tdef callboth(event):\n"
+    "\t\tsudodem.qt.View()\n"
+    "\t\tsudodem.qt.Controller()\n"
+    "\t@thiskeybind.add_binding(Keys.F9, eager=True)\n"
+    "\tdef callgen(event):\n"
+    "\t\tsudodem.qt.Generator()\n"
+    "\t@thiskeybind.add_binding(Keys.F8, eager=True)\n"
+    "\tdef callplot(event):\n"
+    "\t\timport sudodem.plot; sudodem.plot.plot()\n"
+    "\tipshell.enable_gui(gui)\n"
+    "\tipshell()\n"
 );
 cout<<"Tips: Ctrl+L clears screen, Ctrl+U kills line. F12 controller, use h-key for 3d view help,F9 generator, F8 plot"<<endl;
 PyRun_SimpleString(

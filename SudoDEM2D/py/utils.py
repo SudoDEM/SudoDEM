@@ -9,7 +9,8 @@
 Devs: please DO NOT ADD more functions here, it is getting too crowded!
 """
 
-import math,random,doctest,geom,numpy
+import math,random,doctest,numpy
+from sudodem import geom
 from sudodem import *
 from sudodem.wrapper import *
 try: # use psyco if available
@@ -394,7 +395,7 @@ def tetra(vertices,strictCheck=True,dynamic=True,fixed=False,wire=True,color=Non
 	volume = TetrahedronSignedVolume(vertices)
 	if volume < 0:
 		if strictCheck:
-			raise RuntimeError, "tetra: wrong order of vertices"
+			raise (RuntimeError, "tetra: wrong order of vertices")
 		temp = vertices[3]
 		vertices[3] = vertices[2]
 		vertices[2] = temp
@@ -605,11 +606,11 @@ def makeVideo(frameSpec,out,renameNotOverwrite=True,fps=24,kbps=6000,bps=None):
 	if renameNotOverwrite and os.path.exists(out):
 		i=0
 		while(os.path.exists(out+"~%d"%i)): i+=1
-		os.rename(out,out+"~%d"%i); print "Output file `%s' already existed, old file renamed to `%s'"%(out,out+"~%d"%i)
+		os.rename(out,out+"~%d"%i); print("Output file `%s' already existed, old file renamed to `%s'"%(out,out+"~%d"%i))
 	if isinstance(frameSpec,list) or isinstance(frameSpec,tuple): frameSpec=','.join(frameSpec)
 	for passNo in (1,2):
 		cmd=['mencoder','mf://%s'%frameSpec,'-mf','fps=%d'%int(fps),'-ovc','lavc','-lavcopts','vbitrate=%d:vpass=%d:threads=%d:%s'%(int(kbps),passNo,O.numThreads,'turbo' if passNo==1 else ''),'-o',('/dev/null' if passNo==1 else out)]
-		print 'Pass %d:'%passNo,' '.join(cmd)
+		print('Pass %d:'%passNo,' '.join(cmd))
 		ret=subprocess.call(cmd)
 		if ret!=0: raise RuntimeError("Error when running mencoder.")
 
@@ -627,7 +628,7 @@ def _procStatus(name):
 	import os
 	for l in open('/proc/%d/status'%os.getpid()):
 		if l.split(':')[0]==name: return l
-	raise "No such line in /proc/[pid]/status: "+name
+	raise("No such line in /proc/[pid]/status: "+name)
 def vmData():
 	"Return memory usage data from Linux's /proc/[pid]/status, line VmData."
 	l=_procStatus('VmData'); ll=l.split(); assert(ll[2]=='kB')
@@ -827,7 +828,7 @@ This class is used by :yref:`sudodem.utils.readParamsFromTable`.
 				if values[l][j]=='=':
 					try:
 						values[l][j]=values[lines[i-1]][j]
-					except IndexError,KeyError:
+					except(IndexError,KeyError):
 						raise RuntimeError("The = specifier on line %d refers to nonexistent value on previous line?"%l)
 		#import pprint; pprint.pprint(headings); pprint.pprint(values)
 		# add descriptions, but if they repeat, append line number as well
@@ -952,7 +953,7 @@ def psd(bins=5, mass=True, mask=-1):
 	minD = 0.0
 
 	for b in O.bodies:
-		if (isinstance(b.shape,Disk) and ((mask<0) or ((b.mask&mask)<>0))):
+		if (isinstance(b.shape,Disk) and ((mask<0) or ((b.mask&mask)!=0))):
 			if ((2*b.shape.radius)	> maxD) : maxD = 2*b.shape.radius
 			if (((2*b.shape.radius)	< minD) or (minD==0.0)): minD = 2*b.shape.radius
 
@@ -965,7 +966,7 @@ def psd(bins=5, mass=True, mask=-1):
 	binsNumbers = numpy.zeros(bins)
 
 	for b in O.bodies:
-		if (isinstance(b.shape,Disk) and ((mask<0) or ((b.mask&mask)<>0))):
+		if (isinstance(b.shape,Disk) and ((mask<0) or ((b.mask&mask)!=0))):
 			d=2*b.shape.radius
 
 			basketId = int(math.floor( (d-minD) / deltaBinD ) )
@@ -1049,7 +1050,7 @@ class UnstructuredGrid:
 				b = tetra([self.vertices[j] for j in c],**kw)
 				#b = polyhedron([self.vertices[j] for j in c],**kw)
 			else:
-				raise RuntimeError, "Unsupported cell shape (should be triangle or tetrahedron)"
+				raise(RuntimeError, "Unsupported cell shape (should be triangle or tetrahedron)")
 			self.elements[i] = b
 	def resetForces(self):
 		for i in self.vertices:
@@ -1086,7 +1087,7 @@ class UnstructuredGrid:
 					self.forces[ie[2]] += f*w2/ww
 					self.forces[ie[3]] += f*w3/ww
 				else:
-					raise RuntimeError, "TODO"
+					raise(RuntimeError, "TODO")
 		return self.forces
 	def setPositionsOfNodes(self,newPoss):
 		"""Sets new position of nodes and also updates all elements in the simulation
@@ -1108,7 +1109,7 @@ class UnstructuredGrid:
 			elif isinstance(e.shape,Tetra):
 				e.shape.v = [self.vertices[j] for j in c]
 			else:
-				raise RuntimeError, "TODO"
+				raise(RuntimeError, "TODO")
 	def toSimulation(self,bodies=None):
 		"""Insert all elements to SudoDEM simulation
 		"""

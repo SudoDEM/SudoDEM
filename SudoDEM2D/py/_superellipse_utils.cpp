@@ -377,7 +377,7 @@ void drawSVG( const std::string & filename, float width_cm = 10.0, int slice = 2
 
 BOOST_PYTHON_MODULE(_superellipse_utils){
 	// http://numpy.scipy.org/numpydoc/numpy-13.html mentions this must be done in module init, otherwise we will crash
-	import_array();
+	//import_array();
 
 	SUDODEM_SET_DOCSTRING_OPTS;
 	py::def("NewSuperellipse", NewSuperellipse,(py::args("z_dim")=1), "Generate a Superellipse.");

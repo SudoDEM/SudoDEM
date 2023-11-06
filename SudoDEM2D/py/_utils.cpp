@@ -178,7 +178,7 @@ void SaveSnapshot(){
 
 BOOST_PYTHON_MODULE(_utils){
 	// http://numpy.scipy.org/numpydoc/numpy-13.html mentions this must be done in module init, otherwise we will crash
-	import_array();
+	//import_array();
 
 	SUDODEM_SET_DOCSTRING_OPTS;
 	py::def("unbalancedForce",&Shop__unbalancedForce,(py::args("useMaxForce")=false),"Compute the ratio of mean (or maximum, if *useMaxForce*) summary force on bodies and mean force magnitude on interactions. For perfectly static equilibrium, summary force on all bodies is zero (since forces from interactions cancel out and induce no acceleration of particles); this ratio will tend to zero as simulation stabilizes, though zero is never reached because of finite precision computation. Sufficiently small value can be e.g. 1e-2 or smaller, depending on how much equilibrium it should be.");
