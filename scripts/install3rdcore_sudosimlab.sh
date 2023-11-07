@@ -20,7 +20,7 @@ WORKSPACE=$PWD
 # 3 Boost install
 #wget https://www.sudosimlab.com/downloadData/3rdlibs/boost_1_67_0.tar.gz
 #tar xzf boost_1_67_0.tar.gz
-wget https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz
+wget https://boostorg.jfrog.io/artifactory/main/release/1.67.0/source/boost_1_67_0.tar.gz
 tar xzf boost_1_67_0.tar.gz
 cd boost_1_67_0
 ./bootstrap.sh  --with-libraries=python,thread,filesystem,iostreams,regex,serialization,system,date_time link=shared runtime-link=shared --without-icu --with-python=python3
