@@ -474,9 +474,9 @@ void GLViewer::initFromDOMElement(const QDomElement& element){
 boost::posix_time::ptime GLViewer::getLastUserEvent(){return last_user_event;};
 
 
-qreal SudoDEMCamera::zNear() const
+float SudoDEMCamera::zNear() const
 {
-  qreal z = distanceToSceneCenter() - zClippingCoefficient()*sceneRadius()*(1.f-2*cuttingDistance);
+  float z = distanceToSceneCenter() - zClippingCoefficient()*sceneRadius()*(1.f-2*cuttingDistance);
 
   // Prevents negative or null zNear values.
   const float zMin = zNearCoefficient() * zClippingCoefficient() * sceneRadius();

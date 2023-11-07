@@ -296,7 +296,7 @@ PyRun_SimpleString(
     "\t@thiskeybind.add_binding(Keys.F8, eager=True)\n"
     "\tdef callplot(event):\n"
     "\t\timport sudodem.plot; sudodem.plot.plot()\n"
-    "\tipshell.enable_gui(gui)\n"
+    "\tipshell.enable_gui('qt5')\n"
     "\tipshell()\n"
 );
 cout<<"Tips: Ctrl+L clears screen, Ctrl+U kills line. F12 controller, use h-key for 3d view help,F9 generator, F8 plot"<<endl;

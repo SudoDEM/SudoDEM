@@ -67,7 +67,7 @@ ENDIF (CMAKE_CXX_FLAGS)
 
 #=======================  BOOST LIBRARY  =======================#  
 set(BOOST_NO_SYSTEM_PATHS TRUE)
-set(BOOST_ROOT "/home/mango/softs/boost_3")
+set(BOOST_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/HeaderLib")
 set(BOOST_INCLUDE_DIRS "${BOOST_ROOT}/include")
 set(BOOST_LIBRARY_DIRS "${BOOST_ROOT}/lib")
 set(BOOST_LIBRARIES "-lboost_python38 -lboost_thread -lboost_filesystem -lboost_iostreams -lboost_regex -lboost_serialization -lboost_system -lboost_date_time -lpthread")
@@ -95,7 +95,7 @@ OPTION(ENABLE_OPENMP "Enable OpenMP" ${DEFAULT})
 OPTION(ENABLE_GUI "Enable GUI" ${DEFAULT})
 
 #=======================  EIGEN  =======================# 
-set(EIGEN3_INCLUDE_DIR "/home/mango/softs/Eigen")
+set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/Eigen-3.3.5/")
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 MESSAGE(STATUS "Found Eigen3, at: ${EIGEN3_INCLUDE_DIR}")
 
@@ -139,9 +139,9 @@ IF(ENABLE_GUI)
   FIND_PACKAGE(glib2)
 
 
-  set(QGLVIEWER_INCLUDE_DIR "/home/mango/softs/qglviewer/include")
+  set(QGLVIEWER_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/HeaderLib")
   INCLUDE_DIRECTORIES(${QGLVIEWER_INCLUDE_DIR})
-  set(QGLVIEWER_LIBRARIES "/home/mango/softs/qglviewer/lib/libQGLViewer.so.2.6.3")
+  set(QGLVIEWER_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/HeaderLib/lib/libQGLViewer.so")
   SET(QGLVIEWER_FOUND TRUE)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQGLVIEWER_FOUND")
   SET(LINKLIBS  "${LINKLIBS};${QGLVIEWER_LIBRARIES}")
@@ -180,7 +180,7 @@ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR})
 #ENDIF((Boost_MINOR_VERSION LESS 47) AND (Boost_MAJOR_VERSION EQUAL 1))
 
 #===========================================================
-SET(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/sudodeminstall")
+SET(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/../sudodeminstall/SudoDEM3D")
 MESSAGE(STATUS "SudoDEM will be installed to ${CMAKE_INSTALL_PREFIX}")
 
 #===========================================================
@@ -190,9 +190,9 @@ SET(SUDODEM_PY_PATH ${SUDODEM_LIB_PATH}/py)
 SET(SUDODEM_DOC_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/doc/sudodem${SUFFIX})
 SET(SUDODEM_MAN_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_MANDIR})
 
-
+SET(CMAKE_SKIP_BUILD_RPATH FALSE)
 SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 
 
 #===========================================================
@@ -261,15 +261,15 @@ find_python_module(tkinter REQUIRED)
 
 
 ADD_EXECUTABLE(sudodem3d ${CMAKE_CURRENT_SOURCE_DIR}/core/main/sudodem.cpp)
-SET_TARGET_PROPERTIES(sudodem3d PROPERTIES INSTALL_RPATH "$ORIGIN;$ORIGIN/../lib/sudodem/py/sudodem;")
+SET_TARGET_PROPERTIES(sudodem3d PROPERTIES INSTALL_RPATH "$ORIGIN;$ORIGIN/../lib/sudodem/py/sudodem;$ORIGIN/../lib/3rdlibs;")
 
 ADD_LIBRARY(boot SHARED ${CMAKE_CURRENT_SOURCE_DIR}/core/main/pyboot.cpp)
-SET_TARGET_PROPERTIES(boot PROPERTIES PREFIX "" LINK_FLAGS "-Wl,-z,origin,--as-needed" INSTALL_RPATH "$ORIGIN;$ORIGIN/../../;") #add -z,origin
+SET_TARGET_PROPERTIES(boot PROPERTIES PREFIX "" LINK_FLAGS "-Wl,-z,origin,--as-needed" INSTALL_RPATH "$ORIGIN;$ORIGIN/../../;$ORIGIN/../../../3rdlibs;") 
 
 TARGET_LINK_LIBRARIES(sudodem qhull ${BOOST_LIBRARIES} ${PYTHON_LIBRARIES} ${LINKLIBS} -lrt)
 
 
-SET_TARGET_PROPERTIES(sudodem  PROPERTIES LINK_FLAGS "-Wl,--as-needed" INSTALL_RPATH "$ORIGIN;$ORIGIN/py/sudodem/qt" )
+SET_TARGET_PROPERTIES(sudodem  PROPERTIES LINK_FLAGS "-Wl,--as-needed" INSTALL_RPATH "$ORIGIN;$ORIGIN/../3rdlibs;$ORIGIN/../3rdlibs/py;$ORIGIN/py/sudodem/qt" )
 TARGET_LINK_LIBRARIES(boot sudodem)
 
 TARGET_LINK_LIBRARIES(sudodem3d boot ${BOOST_LIBRARIES} ${PYTHON_LIBRARIES})

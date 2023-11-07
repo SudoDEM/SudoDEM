@@ -19,7 +19,7 @@
 
 
 #include<sudodem/lib/opengl/OpenGLWrapper.hpp>
-#include<sudodem/gui/qt4/OpenGLManager.hpp>
+#include<sudodem/gui/qt5/OpenGLManager.hpp>
 
 namespace py = boost::python;
 

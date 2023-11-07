@@ -6,7 +6,7 @@ IF(${ENABLE_GUI})
 
 
   ADD_LIBRARY(_GLViewer SHARED ${_GLViewer_SOURCE_FILES})
-  SET_TARGET_PROPERTIES(_GLViewer PROPERTIES PREFIX "")
+  SET_TARGET_PROPERTIES(_GLViewer PROPERTIES PREFIX "" INSTALL_RPATH "$ORIGIN;$ORIGIN/../../../../3rdlibs;")
 
   TARGET_LINK_LIBRARIES(_GLViewer Qt5::Widgets Qt5::Xml Qt5::OpenGL ${GLUT_LIBRARY} ${OPENGL_LIBRARY} ${QT_LIBRARIES} ${QGLVIEWER_LIBRARIES} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 
@@ -20,14 +20,16 @@ IF(${ENABLE_GUI})
   INSTALL(FILES ${filesPYQT} DESTINATION ${SUDODEM_PY_PATH}/sudodem/qt)
 
   MESSAGE(STATUS "Python3 is used in the GUI")
+  SET(ENV{PYTHONPATH} "${CMAKE_SOURCE_DIR}/../3rdlib/HeaderLib/lib/py")
+
   EXECUTE_PROCESS(
-            COMMAND "/home/mango/softs/PyQt5/bin/pyrcc5" "-o" "${CMAKE_BINARY_DIR}/img_rc.py" "img.qrc"
+            COMMAND "${CMAKE_SOURCE_DIR}/../SudoDEMTools/PyQt5/bin/pyrcc5" "-o" "${CMAKE_BINARY_DIR}/img_rc.py" "img.qrc"
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/qt5
             RESULT_VARIABLE rv
             )
 
   EXECUTE_PROCESS(
-            COMMAND "/home/mango/softs/PyQt5/bin/pyuic5" "-o" "${CMAKE_BINARY_DIR}/ui_controller.py" "controller.ui"
+            COMMAND "${CMAKE_SOURCE_DIR}/../SudoDEMTools/PyQt5/bin/pyuic5" "-o" "${CMAKE_BINARY_DIR}/ui_controller.py" "controller.ui"
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/qt5
             RESULT_VARIABLE rv
             )
