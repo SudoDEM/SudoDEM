@@ -126,7 +126,7 @@ def del_balls():
                         if x > right or x < left or y < front or y > back or z < bottom or z > top:
                                 O.bodies.erase(b.id)
                                 num_del += 1
-        print str(num_del)+" particles are deleted!"
+        print(str(num_del)+" particles are deleted!")
 
 
 
@@ -141,14 +141,14 @@ def quiet_ball():
         calm_num += 2
     if calm_num > 40000:
         if calm_num < 40010:
-            print "calm procedure is over"
+            print("calm procedure is over")
             del_balls()
         if calm_num > 50000:
             O.engines[-2].dead = True
             O.save("init_assembly.xml.bz2")
             #consolidation begins
             triax.dead=False
-            print "consolidation begins"
+            print("consolidation begins")
 
 
 O.dt=1e-4

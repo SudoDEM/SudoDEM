@@ -4,7 +4,7 @@
  #               Copyright (C) 2016 - 2020   Shiwei Zhao
  #
  #
- #		      South China University of Technology
+ #              South China University of Technology
  #       Hong Kong University of Science and Technology
  #
  #  This script is free software; you can redistribute it and/or
@@ -63,13 +63,13 @@ def GridInitial(R,num_x=10,num_y=10,num_z=20):
 def GenSample(r,pos):
    for p in pos:
 
-		#body = GJKPolyhedron([],[1.e-2,1.e-2,1.e-2],0.05*1e-2,p_mat,False)
-		body = GJKCuboid([0.005,0.005,0.005],0.05*1e-2,p_mat,True)
-		#body = GJKCone(0.005,0.01,0.05*1e-2,p_mat,True)
-		#body = GJKCylinder(0.005,0.01,0.05*1e-2,p_mat,True)
-		body.state.pos=p
-		O.bodies.append(body)
-		O.bodies[-1].shape.color=(rand.random(),rand.random(),rand.random())
+        #body = GJKPolyhedron([],[1.e-2,1.e-2,1.e-2],0.05*1e-2,p_mat,False)
+        body = GJKCuboid([0.005,0.005,0.005],0.05*1e-2,p_mat,True)
+        #body = GJKCone(0.005,0.01,0.05*1e-2,p_mat,True)
+        #body = GJKCylinder(0.005,0.01,0.05*1e-2,p_mat,True)
+        body.state.pos=p
+        O.bodies.append(body)
+        O.bodies[-1].shape.color=(rand.random(),rand.random(),rand.random())
 
 
 p_mat = GJKParticleMat(label="mat1",Kn=1e4,Ks=7e3,frictionAngle=math.atan(0.5),density=2650,betan=0,betas=0) #define Material with default values

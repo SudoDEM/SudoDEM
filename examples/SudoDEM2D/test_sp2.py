@@ -4,7 +4,7 @@
  #               Copyright (C) 2016 - 2020   Shiwei Zhao
  #
  #
- #		      South China University of Technology
+ #              South China University of Technology
  #       Hong Kong University of Science and Technology
  #
  #  This script is free software; you can redistribute it and/or
@@ -98,20 +98,20 @@ def Addlayer(r,mat,boxsize,num_s,num_t):
     coor=Genparticles(r,mat,boxsize,num_s,num_t,bottom)
     for b in coor:
         #bb = utils.sphere(b,0.5,material = 'mat1')
-	rr = r*random.uniform(0.5,1.0)
-	bb = NewSuperellipse(1.5*r,r,1.0,mat,True,False)
-	bb.state.pos=b
+        rr = r*random.uniform(0.5,1.0)
+        bb = NewSuperellipse(1.5*r,r,1.0,mat,True,False)
+        bb.state.pos=b
         bb.state.vel=[0,-1]
         O.bodies.append(bb)
-	if len(O.bodies) - 3 > 2000:
-		O.engines[-1].dead=True
+        if len(O.bodies) - 3 > 2000:
+            O.engines[-1].dead=True
 
 O.dt = 1e-3
 
 def out_energy():
-	v1 = O.bodies[-1].state.vel
-	v2 = O.bodies[-2].state.vel
-	print v1.norm() + v2.norm()
+    v1 = O.bodies[-1].state.vel
+    v2 = O.bodies[-2].state.vel
+    print(v1.norm() + v2.norm())
 newton=NewtonIntegrator(damping = 0.1,gravity=(0.,-10.0),label="newton",isSuperellipse=True)
 
 O.engines=[

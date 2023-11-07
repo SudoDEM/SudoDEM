@@ -52,7 +52,7 @@ def output():
 	fout = open('./ouput.dat','a')
 	ss = PT.stress/1e3
 	st = PT.strain
-	print>>fout,st[0],st[0]+st[1],ss[0],ss[1]
+	print(st[0],st[0]+st[1],ss[0],ss[1], file=fout)
 	fout.close()
 
 PT= PeriTriaxController(
