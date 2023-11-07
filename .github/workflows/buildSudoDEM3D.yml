@@ -14,7 +14,7 @@ env:
 
 jobs:
   buildSudoDEM3D:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
 
@@ -22,7 +22,8 @@ jobs:
       shell: bash
       run: |
         cd scripts
-        sh install3rdlibs.sh
+        sh install3rd_base.sh
+        sh install3rdcore_sudosimlab.sh
 
     - name: compile SudoDEM3D
       shell: bash

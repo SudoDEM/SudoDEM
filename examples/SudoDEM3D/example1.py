@@ -4,7 +4,7 @@
  #               Copyright (C) 2016 - 2020   Shiwei Zhao
  #
  #
- #		      South China University of Technology
+ #              South China University of Technology
  #       Hong Kong University of Science and Technology
  #
  #  This script is free software; you can redistribute it and/or
@@ -64,16 +64,16 @@ def GridInitial(R,num_x=10,num_y=10,num_z=20):
 
 #generate a sample
 def GenSample(r,pos):
-   for p in pos:
-		epsilon1 = rand.uniform(0.7,1.6)
-		epsilon2 = rand.uniform(0.7,1.6)
-		a = r
-		b = r*rand.uniform(0.4,0.9)#aspect ratio
-		c = r*rand.uniform(0.4,0.9)
+    for p in pos:
+        epsilon1 = rand.uniform(0.7,1.6)
+        epsilon2 = rand.uniform(0.7,1.6)
+        a = r
+        b = r*rand.uniform(0.4,0.9)#aspect ratio
+        c = r*rand.uniform(0.4,0.9)
 
-		body = NewSuperquadrics2(a,b,c,epsilon1,epsilon2,p_mat,True,isSphere)
-		body.state.pos=p
-		O.bodies.append(body)
+        body = NewSuperquadrics2(a,b,c,epsilon1,epsilon2,p_mat,True,isSphere)
+        body.state.pos=p
+        O.bodies.append(body)
 
 #########setup a simulation####################
 # material for particles

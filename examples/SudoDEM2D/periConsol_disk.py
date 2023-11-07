@@ -159,7 +159,7 @@ def print_fnt():
 		fn = itr.phys.normalForce
 		ft = itr.phys.shearForce
 		mu = ft.norm()/fn.norm()
-		print mu
+		print(mu)
 
 #particles
 gen_sample(boxsize)
@@ -167,7 +167,7 @@ gen_sample(boxsize)
 def post_consol():
    O.engines = O.engines[:4]
    #print getStress()
-   print O.cell.hSize
+   print(O.cell.hSize)
    setContactFriction(0.5)
    O.cell.trsf=Matrix2.Identity
    O.cell.velGrad=Matrix2.Zero

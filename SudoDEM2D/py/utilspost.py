@@ -32,47 +32,47 @@ def outputBoxPov(filename,x,y,z,r=0.001,wallMask=[1,0,1,0,0,1]):#x=[x_min,x_max]
                 for j in y:
                         for i in x:
                                 points.append("<"+str(i)+","+str(j)+","+str(k)+">")
-        print>>fobj, "// The radius of the cylinders to be used for each edge of the box"
-        print>>fobj, "#declare r="+str(r)+";"
-        print>>fobj, "#declare f1=finish{reflection 0.15 specular 0.3 ambient 0.42}"
-        print>>fobj, "#declare t1=texture{pigment{rgbft <0.3,0.9,0.7,0,0.4>} finish{f1}}"
-        print>>fobj, "#declare t2=texture{pigment{rgb <0.1,0.5,0.3>} finish{f1}}"
+        print("// The radius of the cylinders to be used for each edge of the box",file=fobj)
+        print("#declare r="+str(r)+";",file=fobj)
+        print("#declare f1=finish{reflection 0.15 specular 0.3 ambient 0.42}",file=fobj)
+        print("#declare t1=texture{pigment{rgbft <0.3,0.9,0.7,0,0.4>} finish{f1}}",file=fobj)
+        print("#declare t2=texture{pigment{rgb <0.1,0.5,0.3>} finish{f1}}",file=fobj)
         #points include eight vertices of the bouding box
         
-        print>>fobj, "// box"
+        print("// box",file=fobj)
         #faces
-        print>>fobj, "union{"
-        if wallMask[0] >0: print>>fobj, "//left wall\npolygon{4,\t\n"+points[0]+",\t\n"+points[4]+",\t\n"+points[6]+",\t\n"+points[2]+"\n}"
-        if wallMask[1] >0: print>>fobj, "//right wall\npolygon{4,\t\n"+points[1]+",\t\n"+points[3]+",\t\n"+points[7]+",\t\n"+points[5]+"\n}"
-        if wallMask[2] >0: print>>fobj, "//front wall\npolygon{4,\t\n"+points[0]+",\t\n"+points[1]+",\t\n"+points[5]+",\t\n"+points[4]+"\n}"
-        if wallMask[3] >0: print>>fobj, "//back wall\npolygon{4,\t\n"+points[3]+",\t\n"+points[2]+",\t\n"+points[6]+",\t\n"+points[7]+"\n}"
-        if wallMask[4] >0: print>>fobj, "//top wall\npolygon{4,\t\n"+points[4]+",\t\n"+points[5]+",\t\n"+points[7]+",\t\n"+points[6]+"\n}"
-        if wallMask[5] >0: print>>fobj, "//bottom wall\npolygon{4,\t\n"+points[0]+",\t\n"+points[2]+",\t\n"+points[3]+",\t\n"+points[1]+"\n}"
-        print>>fobj, "texture{t1}\n}"
-        print>>fobj, "union{"
+        print("union{",file=fobj)
+        if wallMask[0] >0: print("//left wall\npolygon{4,\t\n"+points[0]+",\t\n"+points[4]+",\t\n"+points[6]+",\t\n"+points[2]+"\n}",file=fobj)
+        if wallMask[1] >0: print("//right wall\npolygon{4,\t\n"+points[1]+",\t\n"+points[3]+",\t\n"+points[7]+",\t\n"+points[5]+"\n}",file=fobj)
+        if wallMask[2] >0: print("//front wall\npolygon{4,\t\n"+points[0]+",\t\n"+points[1]+",\t\n"+points[5]+",\t\n"+points[4]+"\n}",file=fobj)
+        if wallMask[3] >0: print("//back wall\npolygon{4,\t\n"+points[3]+",\t\n"+points[2]+",\t\n"+points[6]+",\t\n"+points[7]+"\n}",file=fobj)
+        if wallMask[4] >0: print("//top wall\npolygon{4,\t\n"+points[4]+",\t\n"+points[5]+",\t\n"+points[7]+",\t\n"+points[6]+"\n}",file=fobj)
+        if wallMask[5] >0: print("//bottom wall\npolygon{4,\t\n"+points[0]+",\t\n"+points[2]+",\t\n"+points[3]+",\t\n"+points[1]+"\n}",file=fobj)
+        print("texture{t1}\n}",file=fobj)
+        print("union{",file=fobj)
         #vertices
         for v in points:
-            print>>fobj,"disk{"+v+",r}"
+            print("disk{"+v+",r}",file=fobj)
         #edges at the bottom
         pts = points[:4]
         tmp =pts[2]
         pts[2] = pts[3]
         pts[3] = tmp
         for i in range(4):
-                print>>fobj, "cylinder{"+pts[i-1]+","+pts[i]+",r}"
+                print("cylinder{"+pts[i-1]+","+pts[i]+",r}",file=fobj)
         #edges at the top
         pts = points[4:]
         tmp =pts[2]
         pts[2] = pts[3]
         pts[3] = tmp
         for i in range(4):
-                print>>fobj, "cylinder{"+pts[i-1]+","+pts[i]+",r}"
+                print("cylinder{"+pts[i-1]+","+pts[i]+",r}",file=fobj)
         #edges at the side
         for i in range(4):
-                print>>fobj, "cylinder{"+points[i]+","+points[i+4]+",r}"
+                print("cylinder{"+points[i]+","+points[i+4]+",r}",file=fobj)
         
         #print>>fobj, "    pigment{rgb <0.7,0.95,1>} finish{specular 0.5 ambient 0.42}"
-        print>>fobj, "texture{t2}\n}"
+        print("texture{t2}\n}",file=fobj)
         fobj.close()
         
 def readPos(filename):     
@@ -225,7 +225,7 @@ def exportCoordNumDistr(filename,maxCN=30):
     f = open(filename,'w')
     FC = coordNumDistr(maxCN=maxCN)
     for i in range(maxCN):
-        print>>f,i,FC[i]
+        print(i,FC[i],file=f)
     f.close()
       
 ###############################################################################
@@ -318,7 +318,7 @@ def outorientation(a,prefix,startstep,pressure,sourcepath,destinationpath,sp=Fal
         for i in O.bodies:
             if i.id>=ids:
                 vv=i.state.se3[1].toRotationMatrix()*i.shape.v[0]
-                print>>obj,vv[0],vv[1],vv[2]
+                print(vv[0],vv[1],vv[2],file=obj)
         obj.close()
 
 
@@ -332,13 +332,13 @@ def output_FC(directory = "m0.67"):
             O.load(directory+"/"+"a"+str(i)+directory+"/finalpacking.xml.bz2")
             C=FC_CN(z=0.5)
             cns.append(C)
-            print i," finished!"
+            print(i," finished!")
             
     for C in cns:
             out = ' '        
             for i in range(30):
                     out += str(C[i])+' '
-            print>>f,out 
+            print(out,file=f) 
     f.close()        
 def notBoundaryP(i):
     for itr in i.intrs():
@@ -362,31 +362,31 @@ def output_ori(directory = "m0.67",ff = [0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0,1.25,1.
         for i in O.bodies:
             if isinstance(i.shape,Superellipse) and notBoundaryP(i):
                 ori = i.state.se3[1].toRotationMatrix()*ore_v
-                print>>f,ori[0],ori[1],ori[2]
-                print>>f,-ori[0],-ori[1],-ori[2]
-        print ii," finished!"
+                print(ori[0],ori[1],ori[2],file=f)
+                print(-ori[0],-ori[1],-ori[2],file=f)
+        print(ii," finished!")
         f.close()
 #######################################################################
 def save_particleinfo(filename):
     "output particle info to a file"
     f = open(filename,'w')
-    print>>f,"###Info of each particle:id radius x y z spin"
+    print("###Info of each particle:id radius x y z spin",file=f)
     for i in O.bodies:
         if isinstance(i.shape,Superellipse):#focus on superball 
             p = i.state.pos
             r = i.shape.rx
-            print>>f,i.id,r,p[0],p[1],p[2],i.state.angVel.norm()
+            print(i.id,r,p[0],p[1],p[2],i.state.angVel.norm(),file=f)
         if isinstance(i.shape,Disk):#focus on superball 
             p = i.state.pos
             r = i.shape.radius
-            print>>f,i.id,r,p[0],p[1],p[2],i.state.angVel.norm()
+            print(i.id,r,p[0],p[1],p[2],i.state.angVel.norm(),file=f)
     f.close()
 
 def save_contactinfo(filename):
     "output contact info to a file"
     f = open(filename,'w')
-    print>>f,"###c_type obj1.id obj2.id nforce(x,y,z) sforce(x,y,z)"
-    print>>f,"### Info of contacts including particle-particle (named 1) and particle-wall (named 2)"
+    print("###c_type obj1.id obj2.id nforce(x,y,z) sforce(x,y,z)",file=f)
+    print("### Info of contacts including particle-particle (named 1) and particle-wall (named 2)",file=f)
     w_contact = list()#store contacts on walls
     for itr in O.interactions:
         fn = itr.phys.normalForce
@@ -401,16 +401,16 @@ def save_contactinfo(filename):
                 w_contact.append(out)            
             else:#particle-particle contact            
                 out = '1 '+str(id1)+' '+str(id2)+' '+str(fn[0])+' '+str(fn[1])+' '+str(fn[2])+' '+str(fs[0])+' '+str(fs[1])+' '+str(fs[2])
-                print>>f, out
+                print(out,file=f)
     for i in w_contact:
-        print>>f,i
+        print(i,file=f)
     f.close()
 def save_wallinfo(filename):
     "output wall positions to a file"
     f = open(filename,'w')
     for i in range(6):
         p =O.bodies[i].state.pos        
-        print>>f,p[0],p[1],p[2]
+        print(p[0],p[1],p[2],file=f)
     f.close()
 
 def save_modelinfo(path,step=0):
@@ -422,12 +422,12 @@ def save_modelinfo(path,step=0):
     save_particleinfo(path+'/particleinfo_'+str(step)+'.txt')
     save_contactinfo(path+'/contactinfo_'+str(step)+'.txt')
     save_wallinfo(path+'/wallinfo_'+str(step)+'.txt')
-    print "Model info output finished!"
+    print("Model info output finished!")
 
 def save_strain(filename,step):
     f = open(filename,'a')
     triax=O.engines[3]
-    print>>f,step,(1.0-triax.height/triax.height0)*100.0
+    print(step,(1.0-triax.height/triax.height0)*100.0,file=f)
     f.close()
 def save_init(path,step):
     O.reset()
@@ -581,14 +581,14 @@ def exportForceChains(path,step=0):
     "export force chains with path of input files and step number."
     path = os.path.dirname(path+'/')
     if not os.path.exists(path):#not exists
-        print "The typed path dose not exist!"
+        print("The typed path dose not exist!")
         return False
     particlefile = os.path.join(path,'particleinfo_'+str(step)+'.txt')
     contactfile = os.path.join(path,'contactinfo_'+str(step)+'.txt')
     wallfile = os.path.join(path,'wallinfo_'+str(step)+'.txt')
     #check if files exist
     if not (os.path.isfile(particlefile) and os.path.isfile(contactfile) and os.path.isfile(wallfile)):
-        print "Input files are missing! Please check the path of particleinfo*.txt, contactinfo*.txt and wallinfo*.txt is set correctly."
+        print("Input files are missing! Please check the path of particleinfo*.txt, contactinfo*.txt and wallinfo*.txt is set correctly.")
         return False
     ForceChains(particlefile,contactfile,wallfile, comment="comment")
     return True
@@ -788,21 +788,21 @@ class VTK3Dhist():
         f_out = open(filename,'w')
     
         #writing the file head
-        print>>f_out,"# vtk DataFile Version 2.0"
-        print>>f_out,"Sway data processing"
-        print>>f_out,"ASCII"
-        print>>f_out,"DATASET POLYDATA"
+        print("# vtk DataFile Version 2.0",file=f_out)
+        print("Sway data processing",file=f_out)
+        print("ASCII",file=f_out)
+        print("DATASET POLYDATA",file=f_out)
 
         m,n = xx.shape
-        print>>f_out,"POINTS   ", n*4," float"  ###index is from 0 in VTK
+        print("POINTS   ", n*4," float",file=f_out)  ###index is from 0 in VTK
         #output points
         for i in range(n):#n elements or polygons
             for j in range(m):
-                print>>f_out, xx[j,i],yy[j,i],zz[j,i]
+                print(xx[j,i],yy[j,i],zz[j,i],file=f_out)
         #output polygons
-        print>>f_out,"POLYGONS ", n,n*5  #polygon_num polygon_num*5
+        print("POLYGONS ", n,n*5,file=f_out)  #polygon_num polygon_num*5
         for i in range(n):
-            print>>f_out,"4 ",i*4,i*4+1,i*4+2,i*4+3
+            print("4 ",i*4,i*4+1,i*4+2,i*4+3,file=f_out)
         f_out.close()
     def drawBar(self,p1,p2,p3,p4,p5):
         #p1~p4: vertices on the top face
@@ -830,30 +830,30 @@ class VTK3Dhist():
         f_out = open(filename,'w')
     
         #writing the file head
-        print>>f_out,"# vtk DataFile Version 2.0"
-        print>>f_out,"Sway data processing"
-        print>>f_out,"ASCII"
-        print>>f_out,"DATASET POLYDATA"
+        print("# vtk DataFile Version 2.0",file=f_out)
+        print("Sway data processing",file=f_out)
+        print("ASCII",file=f_out)
+        print("DATASET POLYDATA",file=f_out)
 
         m,n = self.xx.shape
-        print>>f_out,"POINTS   ", n*4 + 1," float"  ###index is from 0 in VTK; here we include the origin
+        print("POINTS   ", n*4 + 1," float",file=f_out)  ###index is from 0 in VTK; here we include the origin
         #output points
-        print>>f_out, 0,0,0  #output the origin
+        print(0,0,0,file=f_out)  #output the origin
         for i in range(n):#n elements or polygons
             for j in range(m):
-                print>>f_out, self.xx[j,i]*coeff[i],self.yy[j,i]*coeff[i],self.zz[j,i]*coeff[i]
+                print(self.xx[j,i]*coeff[i],self.yy[j,i]*coeff[i],self.zz[j,i]*coeff[i],file=f_out)
         #output polygons
-        print>>f_out,"POLYGONS ", n*5,n*21  #polygon_num polygon_num*5
+        print("POLYGONS ", n*5,n*21,file=f_out)  #polygon_num polygon_num*5
         for i in range(n):
             #print>>f_out,"4 ",i*4,i*4+1,i*4+2,i*4+3
-            print>>f_out,self.drawBar(i*4+1,i*4+2,i*4+3,i*4+4,0)
+            print(self.drawBar(i*4+1,i*4+2,i*4+3,i*4+4,0),file=f_out)
         #output magnitude
-        print>>f_out,"CELL_DATA ", n*5  #
-        print>>f_out,"SCALARS cell_scalars float 1"
-        print>>f_out,"LOOKUP_TABLE default"
+        print("CELL_DATA ", n*5,file=f_out)  #
+        print("SCALARS cell_scalars float 1",file=f_out)
+        print("LOOKUP_TABLE default",file=f_out)
         #print values of all cells (polygons)
         for i in range(n):
-            print>>f_out,coeff[i],coeff[i],coeff[i],coeff[i],coeff[i]
+            print(coeff[i],coeff[i],coeff[i],coeff[i],coeff[i],file=f_out)
         f_out.close()
 
     def VTK3DhistogramCN(self,file_input,file_output,shift):#for orientation of Voronoi cell
@@ -1073,7 +1073,7 @@ def out_anisotropy_cn(path,steps):
     f = open(path+'/anisoCn.txt','w')
     for m in range(steps):
         O.reset()
-        print path,m
+        print(path,m)
         #O.load(path+'/final_con.xml.bz2')
         O.load(path+'/shear/shear'+str(m+1)+'.xml.bz2')
         #path = path+'/outdata'
@@ -1086,7 +1086,7 @@ def out_anisotropy_cn(path,steps):
         zstrain = (1.0-triax.height/triax.height0)*100.0
         ani_nc,ani_bv = output_fabrics()
         cns_avg,rot_avg = output_CNrotation()
-        print>>f,m+1,zstrain,ani_nc,ani_bv,cns_avg,rot_avg
+        print(m+1,zstrain,ani_nc,ani_bv,cns_avg,rot_avg,file=f)
     f.close()
 def out_porosity(path='.'):
     f = open(path+'/porosity.txt','w')
@@ -1095,7 +1095,7 @@ def out_porosity(path='.'):
     for i in range(len(steps)):
         m = mm[i]
         O.reset()
-        print path,m
+        print(path,m)
         #O.load(path+'/'+m+'/final_con.xml.bz2')
         O.load(path+'/'+m+'/shear/shear'+str(steps[i])+'.xml.bz2')
         #path = path+'/outdata'
@@ -1111,7 +1111,7 @@ def out_porosity(path='.'):
             if isinstance(i.shape,Superellipse):
                 v += i.shape.getVolume()
         box_v = triax.height*triax.width*triax.depth
-        print>>f,1.0-v/box_v
+        print(1.0-v/box_v,file=f)
     f.close()   
 #######################################################
 ########## new anisotropy: stress-force-fabric
@@ -1629,13 +1629,13 @@ def calc_aniso_etanetwork(outfile,eta=[0.025,0.05,0.1,0.5,1.0,1.5,2.0,2.5,3.0,3.
     #################################
     ###eta network
     f_out = open(outfile,'w')
-    print>>f_out,"eta ani_cn,ani_fn,ani_fs,ani_bvn,ani_bvs,ani_tot" ##file header
+    print("eta ani_cn,ani_fn,ani_fs,ani_bvn,ani_bvs,ani_tot",file=f_out) ##file header
     for eta_i in eta:
-        print eta_i
+        print(eta_i)
         fn_threshold = eta_i*avg_fn
         ani_cn,ani_fn,ani_fs,ani_bvn,ani_bvs,p_sliding = aniso_etanetwork(q1,vlist_fn,vlist_fs,vlist_bv,fn_threshold)
         ani_tot = 0.4*(ani_cn+ani_bvn+1.5*ani_bvs+ani_fn+1.5*ani_fs)  
-        print>>f_out,eta_i,ani_cn,ani_fn,ani_fs,ani_bvn,ani_bvs,ani_tot,p_sliding
+        print(eta_i,ani_cn,ani_fn,ani_fs,ani_bvn,ani_bvs,ani_tot,p_sliding,file=f_out) 
     f_out.close()
     #return
 
@@ -1694,7 +1694,7 @@ def calc_stressratio_etanetwork(outfile,eta=[0.025,0.05,0.1,0.25,0.5,0.75,1.0,1.
 
     ###eta network
     f_out = open(outfile,'w')
-    print>>f_out,"eta stressratio slidingcontacts" ##file header
+    print("eta stressratio slidingcontacts",file=f_out) ##file header
     
     for eta_i in eta:
         fn_threshold = eta_i*avg_fn
@@ -1722,8 +1722,8 @@ def calc_stressratio_etanetwork(outfile,eta=[0.025,0.05,0.1,0.25,0.5,0.75,1.0,1.
         q1 = tensor_deviator(tensor_stress)
         q = math.sqrt(1.5*tensor_dot_tensor(q1,q1))   
         prop_sliding = float(c_num_sliding)/c_num
-        print eta_i
-        print>>f_out,eta_i,q/p,prop_sliding
+        print(eta_i)
+        print(eta_i,q/p,prop_sliding,file=f_out)
     f_out.close()
     #return
 
@@ -1761,7 +1761,7 @@ def calc_sliding_etanetwork(outfile,eta=[0.025,0.05,0.1,0.5,1.0,1.5,2.0,2.5,3.0,
 
     ###eta network
     f_out = open(outfile,'w')
-    print>>f_out,"eta stressratio slidingcontacts" ##file header
+    print("eta stressratio slidingcontacts",file=f_out) ##file header
     
     for eta_i in eta:
         fn_threshold = eta_i*avg_fn
@@ -1778,19 +1778,19 @@ def calc_sliding_etanetwork(outfile,eta=[0.025,0.05,0.1,0.5,1.0,1.5,2.0,2.5,3.0,
                 if fs1/fn1 > 0.49999:#sliding contact
                     c_num_sliding += 1    
         prop_sliding = float(c_num_sliding)/c_num
-        print eta_i
-        print>>f_out,eta_i,prop_sliding
+        print(eta_i)
+        print(eta_i,prop_sliding,file=f_out)
     f_out.close()
 
 #friction mobilization, calc average friction mobilization index <I_m>
 def calc_avgFricMobilIndex(path,steps):
     filename = 'fricMobiIndex.txt'
     f = open(path+'/'+filename,'w')
-    print>>f,'m,zstrain,avg_Im'
+    print('m,zstrain,avg_Im',file=f)
     f.close()
     for m in range(steps):
         O.reset()
-        print path,m
+        print(path,m)
         #O.load(path+'/final_con.xml.bz2')
         O.load(path+'/shear/shear'+str(m+1)+'.xml.bz2')
         #path = path+'/outdata'
@@ -1819,7 +1819,7 @@ def calc_avgFricMobilIndex(path,steps):
         avg_Im = Im_tot/c_num
         ####
         f = open(path+'/'+filename,'a')
-        print>>f,m+1,zstrain,avg_Im
+        print(m+1,zstrain,avg_Im,file=f)
     f.close()
 
 
@@ -1828,11 +1828,11 @@ def calc_avgFricMobilIndex(path,steps):
 def new_out_anisotropy_cn(path,steps):
     filename = 'aniso-latest.txt'
     f = open(path+'/'+filename,'w')
-    print>>f,'m,zstrain,ani_cn,ani_bvn,ani_bvs,ani_fn,ani_fs,sigma,sigma0,avg_fn,pro_sliding,pro_weak,ani_cn_s,ani_bvn_s,ani_bvs_s,ani_fn_s,ani_fs_s,ani_cn_w,ani_bvn_w,ani_bvs_w,ani_fn_w,ani_fs_w,cns_avg,rot_avg'
+    print('m,zstrain,ani_cn,ani_bvn,ani_bvs,ani_fn,ani_fs,sigma,sigma0,avg_fn,pro_sliding,pro_weak,ani_cn_s,ani_bvn_s,ani_bvs_s,ani_fn_s,ani_fs_s,ani_cn_w,ani_bvn_w,ani_bvs_w,ani_fn_w,ani_fs_w,cns_avg,rot_avg',file=f)
     f.close()
     for m in range(steps):
         O.reset()
-        print path,m
+        print(path,m)
         #O.load(path+'/final_con.xml.bz2')
         O.load(path+'/shear/shear'+str(m+1)+'.xml.bz2')
         #path = path+'/outdata'
@@ -1848,7 +1848,7 @@ def new_out_anisotropy_cn(path,steps):
         ani_cn,ani_bvn,ani_bvs,ani_fn,ani_fs,sigma,sigma0,avg_fn,pro_sliding,pro_weak,ani_cn_s,ani_bvn_s,ani_bvs_s,ani_fn_s,ani_fs_s,ani_cn_w,ani_bvn_w,ani_bvs_w,ani_fn_w,ani_fs_w = calc_anisotropy2()
         cns_avg,rot_avg = output_CNrotation()
         f = open(path+'/'+filename,'a')
-        print>>f,m+1,zstrain,ani_cn,ani_bvn,ani_bvs,ani_fn,ani_fs,sigma,sigma0,avg_fn,pro_sliding,pro_weak,ani_cn_s,ani_bvn_s,ani_bvs_s,ani_fn_s,ani_fs_s,ani_cn_w,ani_bvn_w,ani_bvs_w,ani_fn_w,ani_fs_w,cns_avg,rot_avg
+        print(m+1,zstrain,ani_cn,ani_bvn,ani_bvs,ani_fn,ani_fs,sigma,sigma0,avg_fn,pro_sliding,pro_weak,ani_cn_s,ani_bvn_s,ani_bvs_s,ani_fn_s,ani_fs_s,ani_cn_w,ani_bvn_w,ani_bvs_w,ani_fn_w,ani_fs_w,cns_avg,rot_avg,file=f)
         f.close()
 
 def new_out_anisotropy_eta(m,step):

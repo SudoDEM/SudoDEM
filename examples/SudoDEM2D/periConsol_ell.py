@@ -72,7 +72,7 @@ def print_fnt():
 		fn = itr.phys.normalForce
 		ft = itr.phys.shearForce
 		mu = ft.norm()/fn.norm()
-		print mu
+		print(mu)
 
 gen_particles(num_in_1d,r,binsize)
 
@@ -83,7 +83,7 @@ def blockRotation():
 def post_consol():
    O.engines = O.engines[:4]
    #print getStress()
-   print O.cell.hSize
+   print(O.cell.hSize)
    setContactFriction(0.5)
    O.cell.trsf=Matrix2.Identity
    O.cell.velGrad=Matrix2.Zero
@@ -123,14 +123,14 @@ PT2= PeriTriaxController(
    )
 
 def post_consol1():
-    print "State one over!"
+    print("State one over!")
     O.engines[4].doneHook='post_consol()'
     O.engines[4].goal=(-1e5,-1e5)
     for b in O.bodies:
         b.state.blockedDOFs=''
-    print "FTPO=",utils.getFabricTensorPO2D()
-    print "FTCN=",utils.getFabricTensorCN2D()
-    print "MCN=",utils.getMeanCN()
+    print("FTPO=",utils.getFabricTensorPO2D())
+    print("FTCN=",utils.getFabricTensorCN2D())
+    print("MCN=",utils.getMeanCN())
     #O.pause()
 
 

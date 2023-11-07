@@ -1248,7 +1248,7 @@ void outputWalls(const char* filename){
 
 BOOST_PYTHON_MODULE(_superquadrics_utils){
 	// http://numpy.scipy.org/numpydoc/numpy-13.html mentions this must be done in module init, otherwise we will crash
-	import_array();
+	//import_array();
 
 	SUDODEM_SET_DOCSTRING_OPTS;
     py::def("Superquadrics_test",Superquadrics_test,"test the computation of points on a superquadric given a normal vector.");

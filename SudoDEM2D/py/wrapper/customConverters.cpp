@@ -81,10 +81,10 @@ struct custom_OpenMPAccumulator_from_float{
 	static void* convertible(PyObject* obj_ptr){ return PyFloat_Check(obj_ptr) ? obj_ptr : 0; }
 	static void construct(PyObject* obj_ptr, boost::python::converter::rvalue_from_python_stage1_data* data){ void* storage=((boost::python::converter::rvalue_from_python_storage<OpenMPAccumulator<Real> >*)(data))->storage.bytes; new (storage) OpenMPAccumulator<Real>; ((OpenMPAccumulator<Real>*)storage)->set(boost::python::extract<Real>(obj_ptr)); data->convertible=storage; }
 };
-struct custom_OpenMPAccumulator_to_int  { static PyObject* convert(const OpenMPAccumulator<int>& acc){ return boost::python::incref(PyInt_FromLong((long)acc.get())); } };
+struct custom_OpenMPAccumulator_to_int  { static PyObject* convert(const OpenMPAccumulator<int>& acc){ return boost::python::incref(PyLong_FromLong((long)acc.get())); } };
 struct custom_OpenMPAccumulator_from_int{
 	custom_OpenMPAccumulator_from_int(){  boost::python::converter::registry::push_back(&convertible,&construct,boost::python::type_id<OpenMPAccumulator<int> >()); }
-	static void* convertible(PyObject* obj_ptr){ return PyInt_Check(obj_ptr) ? obj_ptr : 0; }
+	static void* convertible(PyObject* obj_ptr){ return PyLong_Check(obj_ptr) ? obj_ptr : 0; }
 	static void construct(PyObject* obj_ptr, boost::python::converter::rvalue_from_python_stage1_data* data){ void* storage=((boost::python::converter::rvalue_from_python_storage<OpenMPAccumulator<int> >*)(data))->storage.bytes; new (storage) OpenMPAccumulator<int>; ((OpenMPAccumulator<int>*)storage)->set(boost::python::extract<int>(obj_ptr)); data->convertible=storage; }
 };
 

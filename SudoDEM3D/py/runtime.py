@@ -9,7 +9,7 @@ import IPython
 try: # attempt to get numerical version
 	ipython_version=int(IPython.__version__.split('.')[0])*100 + int(IPython.__version__.split('.')[1])
 except ValueError:
-	print 'WARN: unable to extract IPython version from %s, defaulting to 10'%(IPython.__version__)
+	print('WARN: unable to extract IPython version from %s, defaulting to 10'%(IPython.__version__))
 	ipython_version=10
 if (ipython_version < 10): #set version 10 for very old systems
 	newipver=10

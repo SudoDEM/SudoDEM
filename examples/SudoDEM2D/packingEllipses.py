@@ -4,7 +4,7 @@
  #               Copyright (C) 2016 - 2020   Shiwei Zhao
  #
  #
- #		      South China University of Technology
+ #              South China University of Technology
  #       Hong Kong University of Science and Technology
  #
  #  This script is free software; you can redistribute it and/or
@@ -98,8 +98,8 @@ def Addlayer(r,mat,boxsize,num_s,num_t):
         bb.state.pos=b
         bb.state.vel=[0,-1]
         O.bodies.append(bb)
-	if len(O.bodies) - 3 > 2000:
-		O.engines[-1].dead=True
+    if len(O.bodies) - 3 > 2000:
+        O.engines[-1].dead=True
 
 O.dt = 1e-3
 

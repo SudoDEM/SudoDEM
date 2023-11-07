@@ -110,7 +110,7 @@ bool CylindricalWall(Vector3r bottomCenter, double radius, double height, int el
 
 BOOST_PYTHON_MODULE(_fem_utils){
 	// http://numpy.scipy.org/numpydoc/numpy-13.html mentions this must be done in module init, otherwise we will crash
-	import_array();
+	//import_array();
 
 	SUDODEM_SET_DOCSTRING_OPTS;
     py::def("NewMembrane", NewMembrane, "creat a membrane element with three nodes.");

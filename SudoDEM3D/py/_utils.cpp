@@ -19,7 +19,7 @@
 
 
 #include<sudodem/lib/opengl/OpenGLWrapper.hpp>
-#include<sudodem/gui/qt4/OpenGLManager.hpp>
+#include<sudodem/gui/qt5/OpenGLManager.hpp>
 
 namespace py = boost::python;
 
@@ -547,7 +547,7 @@ void SaveSnapshot(){
 
 BOOST_PYTHON_MODULE(_utils){
 	// http://numpy.scipy.org/numpydoc/numpy-13.html mentions this must be done in module init, otherwise we will crash
-	import_array();
+	//import_array();
 
 	SUDODEM_SET_DOCSTRING_OPTS;
 

@@ -12,19 +12,23 @@ It loads sudodem plugins and injects c++ class constructors to the __builtins__
 everywhere.
 """
 
-import ctypes,sys
-try:
-	import dl
-except ImportError:
-	import DLFCN as dl
-if True: # not eval('${mono}'):
-	# see file:///usr/share/doc/python2.6/html/library/sys.html#sys.setdlopenflags
-	# and various web posts on the topic, e.g.
-	# * http://gcc.gnu.org/faq.html#dso
-	# * http://www.code-muse.com/blog/?p=58
-	# * http://wiki.python.org/moin/boost.python/CrossExtensionModuleDependencies
-	sys.setdlopenflags(dl.RTLD_NOW | dl.RTLD_GLOBAL)
-else: sys.setdlopenflags(dl.RTLD_NOW)
+import ctypes,sys,os
+if(sys.version_info[0]<3):
+    try:
+	    import dl
+    except ImportError:
+	    import DLFCN as dl
+    if True: # not eval(''):
+	    # see file:///usr/share/doc/python2.6/html/library/sys.html#sys.setdlopenflags
+	    # and various web posts on the topic, e.g.
+	    # * http://gcc.gnu.org/faq.html#dso
+	    # * http://www.code-muse.com/blog/?p=58
+	    # * http://wiki.python.org/moin/boost.python/CrossExtensionModuleDependencies
+	    sys.setdlopenflags(dl.RTLD_NOW | dl.RTLD_GLOBAL)
+    else: 
+        sys.setdlopenflags(dl.RTLD_NOW)
+else:
+    sys.setdlopenflags(os.RTLD_NOW | os.RTLD_GLOBAL)
 
 # important: initialize c++ by importing libstdc++ directly
 # see http://www.abclinuxu.cz/poradna/programovani/show/286322
@@ -61,29 +65,29 @@ for root,dirs,files in os.walk(libDir):
 		plugin=os.path.join(libDir,root,f)
 		plugins.append(plugin)
 if 'SUDODEM_DEBUG' in os.environ:
-	print 'The following plugins will be loaded:'
-	for p in plugins: print '\t'+p
+	print('The following plugins will be loaded:')
+	for p in plugins: print('\t'+p)
 
 # c++ initialization code
-import boot
+from sudodem import boot
 boot.initialize(plugins,confDir)
-import system
+from sudodem import system
 
 # create proxies for deprecated classes
 deprecatedTypes=system.cxxCtorsDict()
 # insert those in the module namespace
 globals().update(deprecatedTypes)
 # declare what should be imported for "from sudodem import *"
-__all__=deprecatedTypes.keys()+['O']
+__all__=list(deprecatedTypes.keys())+['O']
 
 try:
 	from minieigen import *
 except ImportError:
 	from miniEigen import *
 
-from wrapper import *
+from sudodem.wrapper import *
 # import to separate namespace to be able to call dir(miniEigen) and dir(wrapper) below
-import wrapper
+import sudodem.wrapper
 
 try:
 	import minieigen
@@ -91,9 +95,9 @@ except ImportError:
 	import miniEigen
 
 # out-of-class docstrings for some classes
-import _extraDocs
+from sudodem import _extraDocs
 # import a few "important" modules along with *
-import utils # some others?
+from sudodem import utils # some others?
 __all__+=['utils',]+dir(wrapper)
 
 try:
@@ -102,9 +106,16 @@ except NameError:
 	pass
 
 # make O and wrapper.Omega part of __builtin__ (equvialent to global)
-import __builtin__
-__builtin__.__dict__['O'] = O
-__builtin__.__dict__['Omega'] = wrapper.Omega
+
+if(sys.version_info[0]<3):
+	import __builtin__ as builtins
+else:
+	import builtins
+
+
+builtins.__dict__['O'] = O
+builtins.__dict__['Omega'] = wrapper.Omega
+
 # define a default list of engine
 O.engines=[
 		ForceResetter(),

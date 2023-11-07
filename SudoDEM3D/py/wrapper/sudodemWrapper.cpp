@@ -1006,7 +1006,7 @@ BOOST_PYTHON_MODULE(wrapper)
 		.def("replace",&pyNodeContainer::replace);
 	py::class_<pyNodeIterator>("NodeIterator",py::init<pyNodeIterator&>())
 		.def("__iter__",&pyNodeIterator::pyIter)
-		.def("next",&pyNodeIterator::pyNext);
+		.def("__next__",&pyNodeIterator::pyNext);
 //
     py::class_<pyFEContainer>("FEContainer",py::init<pyFEContainer&>())
 		.def("__getitem__",&pyFEContainer::pyGetitem)
@@ -1019,7 +1019,7 @@ BOOST_PYTHON_MODULE(wrapper)
 		.def("replace",&pyFEContainer::replace);
 	py::class_<pyElementIterator>("ElementIterator",py::init<pyElementIterator&>())
 		.def("__iter__",&pyElementIterator::pyIter)
-		.def("next",&pyElementIterator::pyNext);
+		.def("__next__",&pyElementIterator::pyNext);
 ////////////////
 	py::class_<pyBodyContainer>("BodyContainer",py::init<pyBodyContainer&>())
 		.def("__getitem__",&pyBodyContainer::pyGetitem)
@@ -1039,7 +1039,7 @@ BOOST_PYTHON_MODULE(wrapper)
 		.def("replace",&pyBodyContainer::replace);
 	py::class_<pyBodyIterator>("BodyIterator",py::init<pyBodyIterator&>())
 		.def("__iter__",&pyBodyIterator::pyIter)
-		.def("next",&pyBodyIterator::pyNext);
+		.def("__next__",&pyBodyIterator::pyNext);
 
 	py::class_<pyInteractionContainer>("InteractionContainer","Access to :yref:`interactions<Interaction>` of simulation, by using \n\n#. id's of both :yref:`Bodies<Body>` of the interactions, e.g. ``O.interactions[23,65]``\n#. iteraction over the whole container::\n\n\tfor i in O.interactions: print i.id1,i.id2\n\n.. note::\n\tIteration silently skips interactions that are not :yref:`real<Interaction.isReal>`.",py::init<pyInteractionContainer&>())
 		.def("__iter__",&pyInteractionContainer::pyIter)
@@ -1055,7 +1055,7 @@ BOOST_PYTHON_MODULE(wrapper)
 		.def("clear",&pyInteractionContainer::clear,"Remove all interactions, and invalidate persistent collider data (if the collider supports it).");
 	py::class_<pyInteractionIterator>("InteractionIterator",py::init<pyInteractionIterator&>())
 		.def("__iter__",&pyInteractionIterator::pyIter)
-		.def("next",&pyInteractionIterator::pyNext);
+		.def("__next__",&pyInteractionIterator::pyNext);
 
 	py::class_<pyForceContainer>("ForceContainer",py::init<pyForceContainer&>())
 		.def("f",&pyForceContainer::force_get,(py::arg("id"),py::arg("sync")=false),"Force applied on body. For clumps in openMP, synchronize the force container with sync=True, else the value will be wrong.")
