@@ -78,7 +78,7 @@ def outputBoxPov(filename,x,y,z,r=0.001,wallMask=[1,0,1,0,0,1]):#x=[x_min,x_max]
 def outPov(fname,transmit=0,phong=1.0,singleColor=True,ids=[],scale=1.0, withbox = True):
     views=sudodem.qt._GLViewer.views()
     if len(views) == 0:
-        raise RuntimeError,"Open a view by clicking the show3D button."
+        raise (RuntimeError,"Open a view by clicking the show3D button.")
     view = views[0]
     fout = open("./"+fname+".pov",'w')
     loc = view.eyePosition*scale

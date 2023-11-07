@@ -63,7 +63,7 @@ else:
     import queue as Queue
 
 import threading
-import Queue
+
 
 class _Tk(object):
     """

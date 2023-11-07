@@ -82,7 +82,7 @@ def textClumps(fileName,shift=Vector3.Zero,discretization=0,orientation=Quaterni
 			curClump=[]
 			idD = curClump.append(utils.disk(shift+scale*pos,scale*float(data[3]),**kw))
 
-	if (len(curClump)<>0):
+	if (len(curClump)!=0):
 		ret.append(O.bodies.appendClumped(curClump,discretization=discretization))
 
 	# Set the mask to a clump the same as the first member of it
@@ -164,7 +164,7 @@ def gmsh(meshfile="file.mesh",shift=Vector3.Zero,scale=1.0,orientation=Quaternio
 	nodelistVector3=[]
 	findVerticesString=0
 
-	while (lines[findVerticesString].split()[0]<>'Vertices'): #Find the string with the number of Vertices
+	while (lines[findVerticesString].split()[0]!='Vertices'): #Find the string with the number of Vertices
 		findVerticesString+=1
 	findVerticesString+=1
 	numNodes = int(lines[findVerticesString].split()[0])
@@ -180,7 +180,7 @@ def gmsh(meshfile="file.mesh",shift=Vector3.Zero,scale=1.0,orientation=Quaternio
 
 
 	findTriangleString=findVerticesString+numNodes
-	while (lines[findTriangleString].split()[0]<>'Triangles'): #Find the string with the number of Triangles
+	while (lines[findTriangleString].split()[0]!='Triangles'): #Find the string with the number of Triangles
 		findTriangleString+=1
 	findTriangleString+=1
 	numTriangles = int(lines[findTriangleString].split()[0])
