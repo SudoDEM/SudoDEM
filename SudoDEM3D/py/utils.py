@@ -318,7 +318,7 @@ def wall(position,axis,sense=0,color=None,material=-1,mask=1):
 	See :yref:`sudodem.utils.sphere`'s documentation for meaning of other parameters."""
 	b=Body()
 	b.shape=Wall(sense=sense,axis=axis,color=color if color else randomColor())
-	if isinstance(position,(int,long,float)):
+	if isinstance(position,(int,float)):
 		pos2=Vector3(0,0,0); pos2[axis]=position
 	else: pos2=position
 	_commonBodySetup(b,0,Vector3(0,0,0),material,pos=pos2,fixed=True)

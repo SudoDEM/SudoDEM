@@ -234,7 +234,7 @@ PyRun_SimpleString(
         "\t\tif arg0.endswith('.py'):\n"
             "\t\t\tdef runScript(script):\n"
                 "\t\t\t\tsys.stderr.write('Running script '+arg0)\n"
-                "\t\t\t\ttry: execfile(script,globals())\n"
+                "\t\t\t\ttry: exec(open(script).read(),globals())\n"
                 "\t\t\t\texcept SystemExit: raise\n"
                 "\t\t\t\texcept: # all other exceptions\n"
                     "\t\t\t\t\timport traceback\n"

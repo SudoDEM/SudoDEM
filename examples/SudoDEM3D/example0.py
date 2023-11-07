@@ -54,7 +54,7 @@ def record_data():
     # p is the object of the sphere
     # as a body object, p has several properties, e.g., state, material, which can be listed by p.dict() in the commandline.
     pos = p.state.pos # get the position of the sphere
-    print>>fout, O.iter, pos[0], pos[1], pos[2] # we print the iteration number and the position (x,y,z) into the file fout.
+    print(O.iter, pos[0], pos[1], pos[2], file=fout) # we print the iteration number and the position (x,y,z) into the file fout.
     # then, close the file and release resource
     fout.close()
 
@@ -84,7 +84,7 @@ O.dt = 1e-5
 
 # clean the file data.dat and write a file head
 fout = open('data.dat','w') # we open the file in a write mode so that the file will be clean
-print>>fout, 'iter, x, y, z' # write a file head
+print('iter, x, y, z',file=fout) # write a file head
 fout.close() # close the file
 
 # run the simulation
