@@ -66,7 +66,7 @@ wget https://www.sudosimlab.com/downloadData/3rdlibs/pyqt_5_11_3.tar.xz
 tar xf pyqt_5_11_3.tar.xz
 cd pyqt_5_11_3
 
-python3 configure.py --qmake=/home/mango/software/Qt/5.15.2/gcc_64/bin/qmake --sip=$WORKSPACE/../SudoDEMTools/sip/bin/sip --sip-incdir=$WORKSPACE/../SudoDEMTools/sip/include --bindir=$WORKSPACE/../SudoDEMTools/PyQt5/bin --designer-plugindir=$WORKSPACE/../SudoDEMTools/PyQt5/plugin --sipdir=$WORKSPACE/../SudoDEMTools/sip/sip2pyqt --destdir=$WORKSPACE/HeaderLib/lib/py --stubsdir=$WORKSPACE/../SudoDEMTools/PyQt5/stubs --qml-plugindir=$WORKSPACE/../SudoDEMTools/PyQt5/qml --confirm-license
+python3 configure.py --qmake=/usr/bin/qmake --sip=$WORKSPACE/../SudoDEMTools/sip/bin/sip --sip-incdir=$WORKSPACE/../SudoDEMTools/sip/include --bindir=$WORKSPACE/../SudoDEMTools/PyQt5/bin --designer-plugindir=$WORKSPACE/../SudoDEMTools/PyQt5/plugin --sipdir=$WORKSPACE/../SudoDEMTools/sip/sip2pyqt --destdir=$WORKSPACE/HeaderLib/lib/py --stubsdir=$WORKSPACE/../SudoDEMTools/PyQt5/stubs --qml-plugindir=$WORKSPACE/../SudoDEMTools/PyQt5/qml --confirm-license
 make -j4
 make install
 
