@@ -25,6 +25,7 @@ jobs:
     - name: install basic 3rdlibs
       shell: bash
       run: |
+        mkdir -p 3rdlib/3rdlibs/py
         cd scripts
         sh install3rd_base.sh
         cd ../3rdlib/

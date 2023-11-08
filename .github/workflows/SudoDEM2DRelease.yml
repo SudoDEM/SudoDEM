@@ -20,6 +20,7 @@ jobs:
     - name: install basic 3rdlibs
       shell: bash
       run: |
+        mkdir -p 3rdlib/3rdlibs/py
         cd scripts
         sh install3rd_base.sh
         cd ../3rdlib/
@@ -37,7 +38,6 @@ jobs:
     - name: download precompiled 3rdlibs
       shell: bash
       run: |
-        mkdir -p 3rdlib/3rdlibs/py
         cd 3rdlib
         wget https://github.com/SudoDEM/3rdlibs/releases/latest/download/3rdlibs-${{matrix.os}}.tar.xz
         tar xf 3rdlibs-${{matrix.os}}.tar.xz

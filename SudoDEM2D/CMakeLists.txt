@@ -95,7 +95,7 @@ OPTION(ENABLE_OPENMP "Enable OpenMP" ${DEFAULT})
 OPTION(ENABLE_GUI "Enable GUI" ${DEFAULT})
 
 #=======================  EIGEN  =======================# 
-set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/Eigen-3.3.5/")
+set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../3rdlib/HeaderLib/Eigen-3.3.5/")
 INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIR})
 MESSAGE(STATUS "Found Eigen3, at: ${EIGEN3_INCLUDE_DIR}")
 
