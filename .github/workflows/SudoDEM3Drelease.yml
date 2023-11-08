@@ -36,11 +36,10 @@ jobs:
       run: |
         wget https://github.com/SudoDEM/3rdlibs/releases/latest/download/tools-${{matrix.os}}.tar.xz
         tar xf tools-${{matrix.os}}.tar.xz
-        cd 3rdlib
         wget https://github.com/SudoDEM/3rdlibs/releases/latest/download/3rdlibs-${{matrix.os}}.tar.xz
         tar xf 3rdlibs-${{matrix.os}}.tar.xz
-        cp -rf HeaderLib/lib/* 3rdlibs/
-        cp -r HeaderLib/lib/py/* 3rdlibs/py/
+        cp -rf 3rdlib/HeaderLib/lib/* 3rdlibs/
+        cp -r 3rdlib/HeaderLib/lib/py/* 3rdlibs/py/
 
     - name: compile SudoDEM3D
       shell: bash
