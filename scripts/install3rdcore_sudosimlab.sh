@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# python pip dependencies
-python3 -m pip install numpy matplotlib xlib ipython
 
 # 1 create the 3rdlib dir
 

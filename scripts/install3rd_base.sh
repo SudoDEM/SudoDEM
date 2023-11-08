@@ -6,3 +6,7 @@ sudo apt-get install -y build-essential cmake zlib1g-dev freeglut3-dev libbz2-de
 # Qt5 based library
 sudo apt-get install -y qt5-default libqt5svg5-dev libqt5webkit5-dev libqt5designer5
 
+# python pip dependencies
+python3 -m pip install numpy matplotlib xlib ipython
+
+
