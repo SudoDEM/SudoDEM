@@ -15,13 +15,14 @@ jobs:
         os: [ubuntu-20.04]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: install basic 3rdlibs
       shell: bash
       run: |
         cd scripts
         sh install3rd_base.sh
+        cd ../3rdlib/
         wget https://www.sudosimlab.com/downloadData/3rdlibs/eigen-3.3.5.tar.gz
         tar xzf eigen-3.3.5.tar.gz
         mv eigen-git-mirror-3.3.5 Eigen-3.3.5
