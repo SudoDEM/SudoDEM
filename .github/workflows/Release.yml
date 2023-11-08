@@ -1,4 +1,4 @@
-name: Release SudoDEM2D
+name: Release
 
 on:
   release:
@@ -8,11 +8,12 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  SudoDEM2Drelease:
+  release:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-20.04]
+        package: [SudoDEM2D, SudoDEM3D]
 
     steps:
     - uses: actions/checkout@v4
@@ -42,28 +43,28 @@ jobs:
         cp -rf HeaderLib/lib/* 3rdlibs/
         cp -r HeaderLib/lib/py/* 3rdlibs/py/
 
-    - name: compile SudoDEM2D
+    - name: compile ${{matrix.package}}
       shell: bash
       run: |
         cd scripts
-        sh firstCompile_SudoDEM2D.sh
+        sh firstCompile_${{matrix.package}}.sh
 
-    - name: Archive compiled SudoDEM2D
+    - name: Archive compiled ${{matrix.package}}
       working-directory: ${{github.workspace}}/
       run: |
-          tar cfJ SudoDEM2D-${{matrix.os}}.tar.xz sudodeminstall
+          tar cfJ ${{matrix.package}}-${{matrix.os}}.tar.xz sudodeminstall
 
-    - name: upload compiled SudoDEM2D
+    - name: upload compiled ${{matrix.package}}
       uses: actions/upload-artifact@v3
       with:
-        name: SudoDEM2D-${{matrix.os}}
+        name: ${{matrix.package}}-${{matrix.os}}
         path: |
-          ${{github.workspace}}/SudoDEM2D-${{matrix.os}}.tar.xz
+          ${{github.workspace}}/${{matrix.package}}-${{matrix.os}}.tar.xz
 
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{github.workspace}}/SudoDEM2D-${{matrix.os}}.tar.xz
+        file: ${{github.workspace}}/${{matrix.package}}-${{matrix.os}}.tar.xz
         tag: ${{ github.ref }}
         overwrite: true
