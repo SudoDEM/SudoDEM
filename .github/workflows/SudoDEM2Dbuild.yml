@@ -29,11 +29,11 @@ jobs:
         sh install3rd_base.sh
 
     - name: compile 3rdlibs
-    if: false #do not compile
-    shell: bash
-    run: |
-      cd scripts
-      sh install3rdcore_sudosimlab.sh
+      if: false #do not compile
+      shell: bash
+      run: |
+        cd scripts
+        sh install3rdcore_sudosimlab.sh
 
     - name: download precompiled 3rdlibs
       shell: bash
@@ -63,10 +63,4 @@ jobs:
         path: |
           ${{github.workspace}}/SudoDEM2D-${{matrix.os}}.tar.xz
 
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{github.workspace}}/SudoDEM2D-${{matrix.os}}.tar.xz
-        tag: ${{ github.ref }}
-        overwrite: true
+
