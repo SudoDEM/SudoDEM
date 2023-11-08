@@ -12,7 +12,7 @@ tar xf tools-${OS}.tar.xz
 wget https://github.com/SudoDEM/3rdlibs/releases/latest/download/3rdlibs-${OS}.tar.xz
 tar xf 3rdlibs-${OS}.tar.xz
 
-
+cd 3rdlib
 #cp all libraries
-cp -rf 3rdlib/HeaderLib/lib/* 3rdlibs/
-cp -r 3rdlib/HeaderLib/lib/py/* 3rdlibs/py/
+cp -rf HeaderLib/lib/* 3rdlibs/
+cp -r HeaderLib/lib/py/* 3rdlibs/py/

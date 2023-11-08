@@ -38,8 +38,9 @@ jobs:
         tar xf tools-${{matrix.os}}.tar.xz
         wget https://github.com/SudoDEM/3rdlibs/releases/latest/download/3rdlibs-${{matrix.os}}.tar.xz
         tar xf 3rdlibs-${{matrix.os}}.tar.xz
-        cp -rf 3rdlib/HeaderLib/lib/* 3rdlibs/
-        cp -r 3rdlib/HeaderLib/lib/py/* 3rdlibs/py/
+        cd 3rdlib
+        cp -rf HeaderLib/lib/* 3rdlibs/
+        cp -r HeaderLib/lib/py/* 3rdlibs/py/
 
     - name: compile SudoDEM3D
       shell: bash
