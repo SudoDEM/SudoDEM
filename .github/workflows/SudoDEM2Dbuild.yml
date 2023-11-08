@@ -13,7 +13,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  buildSudoDEM2D:
+  SudoDEM2Dbuild:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
