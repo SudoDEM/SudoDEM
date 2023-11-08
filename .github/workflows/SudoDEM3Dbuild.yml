@@ -1,14 +1,19 @@
-name: Release SudoDEM2D
+name: Build SudoDEM3D
 
 on:
-  release:
-    types: [prereleased]
+  #push:
+    #branches: [ci]
+
+  pull_request:
+    branches: [master]
+    paths:
+      - SudoDEM3D/**
 
 env:
   BUILD_TYPE: Release
 
 jobs:
-  SudoDEM2Drelease:
+  SudoDEM3Dbuild:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -34,6 +39,7 @@ jobs:
     - name: download precompiled 3rdlibs
       shell: bash
       run: |
+        mkdir -p 3rdlib/3rdlibs/py
         wget https://github.com/SudoDEM/3rdlibs/releases/latest/download/tools-${{matrix.os}}.tar.xz
         tar xf tools-${{matrix.os}}.tar.xz
         cd 3rdlib
@@ -42,28 +48,22 @@ jobs:
         cp -rf HeaderLib/lib/* 3rdlibs/
         cp -r HeaderLib/lib/py/* 3rdlibs/py/
 
-    - name: compile SudoDEM2D
+    - name: compile SudoDEM3D
       shell: bash
       run: |
         cd scripts
-        sh firstCompile_SudoDEM2D.sh
+        sh firstCompile_SudoDEM3D.sh
 
-    - name: Archive compiled SudoDEM2D
+    - name: Archive compiled SudoDEM3D
       working-directory: ${{github.workspace}}/
       run: |
-          tar cfJ SudoDEM2D-${{matrix.os}}.tar.xz sudodeminstall
+          tar cfJ SudoDEM3D-${{matrix.os}}.tar.xz sudodeminstall
 
-    - name: upload compiled SudoDEM2D
+    - name: upload compiled SudoDEM3D
       uses: actions/upload-artifact@v3
       with:
-        name: SudoDEM2D-${{matrix.os}}
+        name: SudoDEM3D-${{matrix.os}}
         path: |
-          ${{github.workspace}}/SudoDEM2D-${{matrix.os}}.tar.xz
+          ${{github.workspace}}/SudoDEM3D-${{matrix.os}}.tar.xz
 
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{github.workspace}}/SudoDEM2D-${{matrix.os}}.tar.xz
-        tag: ${{ github.ref }}
-        overwrite: true
+
