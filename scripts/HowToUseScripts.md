@@ -8,14 +8,14 @@ wget https://github.com/SudoDEM/3rdlibs/releases/latest/download/SudoDEM3D-ubunt
 ```
 ## Using compiled 3rdlibs
 ```bash
-./install3rd_bash.sh
+./install3rd_base.sh
 ./install3rdcore_ubuntu20.04.sh
 ./firstCompile_SudoDEM2D.sh
 ./fristCompile_SudoDEM3D.sh
 ```
 ## Compiling everything from sources
 ```bash
-./install3rd_bash.sh
+./install3rd_base.sh
 ./install3rdcore_sudosimlab.sh
 ./firstCompile_SudoDEM2D.sh
 ./fristCompile_SudoDEM3D.sh
