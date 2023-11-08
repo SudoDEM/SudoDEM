@@ -37,10 +37,6 @@ jobs:
         cd 3rdlib
         wget https://github.com/SudoDEM/3rdlibs/releases/latest/download/3rdlibs-${{matrix.os}}.tar.xz
         tar xf 3rdlibs-${{matrix.os}}.tar.xz
-        wget https://www.sudosimlab.com/downloadData/3rdlibs/eigen-3.3.5.tar.gz
-        tar xzf eigen-3.3.5.tar.gz
-        mv eigen-git-mirror-3.3.5 Eigen-3.3.5
-        cp -rf Eigen-3.3.5 HeaderLib/
         cp -rf HeaderLib/lib/* 3rdlibs/
         cp -r HeaderLib/lib/py/* 3rdlibs/py/
 
