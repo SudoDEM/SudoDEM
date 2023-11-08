@@ -4,7 +4,8 @@
 cd ..
 mkdir 3rdlib
 cd 3rdlib
-mkdir 3rdlibs/py -p
+mkdir -p 3rdlibs/py
+mkdir HeaderLib
 #Install on Ubuntu
 WORKSPACE=$PWD
 #1. Basic dependencies
@@ -32,6 +33,7 @@ cd $WORKSPACE
 wget https://www.sudosimlab.com/downloadData/3rdlibs/eigen-3.3.5.tar.gz
 tar xzf eigen-3.3.5.tar.gz
 mv eigen-git-mirror-3.3.5 Eigen-3.3.5
+cp -rf Eigen-3.3.5 HeaderLib/
 #get the minieigen source
 wget https://www.sudosimlab.com/downloadData/3rdlibs/minieigen-1.0.tar.gz
 tar xzf minieigen-1.0.tar.gz 

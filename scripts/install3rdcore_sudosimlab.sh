@@ -8,8 +8,8 @@ mkdir 3rdlib
 
 cd 3rdlib
 
-mkdir 3rdlibs
 mkdir -p 3rdlibs/py
+mkdir HeaderLib
 
 
 # 2 workspace = sudodem_3rdlib
@@ -30,6 +30,7 @@ cd $WORKSPACE
 wget https://www.sudosimlab.com/downloadData/3rdlibs/eigen-3.3.5.tar.gz
 tar xzf eigen-3.3.5.tar.gz
 mv eigen-git-mirror-3.3.5 Eigen-3.3.5
+cp -rf Eigen-3.3.5 HeaderLib/
 
 wget https://www.sudosimlab.com/downloadData/3rdlibs/minieigen_1_py3.tar.xz
 tar xf minieigen_1_py3.tar.xz
