@@ -1,14 +1,19 @@
-name: Release SudoDEM2D
+name: Build SudoDEM2D
 
 on:
-  release:
-    types: [prereleased]
+  #push:
+    #branches: [ci]
+
+  pull_request:
+    branches: [master]
+    paths:
+      - SudoDEM2D/**
 
 env:
   BUILD_TYPE: Release
 
 jobs:
-  releaseSudoDEM2D:
+  buildSudoDEM2D:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -57,3 +62,11 @@ jobs:
         name: SudoDEM2D-${{matrix.os}}
         path: |
           ${{github.workspace}}/SudoDEM2D-${{matrix.os}}.tar.xz
+
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{github.workspace}}/SudoDEM2D-${{matrix.os}}.tar.xz
+        tag: ${{ github.ref }}
+        overwrite: true
