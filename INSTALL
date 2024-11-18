@@ -1,4 +1,6 @@
 ############################################################################
+Please follow the instructions under the folder Scripts.
+
 #Install on Ubuntu
 #The install procedure includes two parts: compilation of the 3rd-party libraries and the main program. Get the latest source code from the repo (https://github.com/SudoDEM/SudoDEM).
 
