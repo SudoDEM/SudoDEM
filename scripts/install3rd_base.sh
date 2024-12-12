@@ -9,4 +9,9 @@ sudo apt-get install -y qtbase5-dev qt5-qmake libqt5svg5-dev libqt5webkit5-dev l
 # python pip dependencies
 python3 -m pip install numpy matplotlib xlib ipython
 
-
+#bzip2
+wget https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+tar xzf bzip2-1.0.8.tar.gz
+cd bzip2-1.0.8
+make
+sudo make install
