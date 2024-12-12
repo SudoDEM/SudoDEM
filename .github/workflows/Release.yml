@@ -12,12 +12,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-20.04, ubuntu-24.04]
         package: [SudoDEM2D, SudoDEM3D]
+        python: [3.8]
 
     steps:
     - uses: actions/checkout@v4
-
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{matrix.python}}
+        
     - name: install basic 3rdlibs
       shell: bash
       run: |
