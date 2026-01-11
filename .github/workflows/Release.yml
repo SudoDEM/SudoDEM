@@ -12,30 +12,35 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, ubuntu-24.04]
+        os: [ubuntu-22.04, ubuntu-24.04]
         package: [SudoDEM2D, SudoDEM3D]
-        python: [3.8]
+        # We define a placeholder python key, then specify the exact version below
+        include:
+          - os: ubuntu-22.04
+            python: "3.10"
+          - os: ubuntu-24.04
+            python: "3.12"
 
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v5
       with:
         python-version: ${{matrix.python}}
         
-    - name: install basic 3rdlibs
+    - name: Install3rd base
       shell: bash
       run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+        build-essential cmake zlib1g-dev \
+        freeglut3-dev libbz2-dev libglib2.0 \
+        python3-distutils python3-dev python3-pip python3-tk  \
+        qtbase5-dev qt5-qmake libqt5svg5-dev \
+        libqt5webkit5-dev libqt5designer5
+        python3 -m pip install numpy matplotlib xlib ipython
+        pip install --upgrade setuptools
         mkdir -p 3rdlib/3rdlibs/py
-        cd scripts
-        sh install3rd_base.sh
-
-    - name: compile 3rdlibs
-      if: false #do not compile
-      shell: bash
-      run: |
-        cd scripts
-        sh install3rdcore_sudosimlab.sh
-
+        
     - name: download precompiled 3rdlibs
       shell: bash
       run: |
@@ -59,7 +64,7 @@ jobs:
           tar cfJ ${{matrix.package}}-${{matrix.os}}.tar.xz sudodeminstall
 
     - name: upload compiled ${{matrix.package}}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{matrix.package}}-${{matrix.os}}
         path: |
