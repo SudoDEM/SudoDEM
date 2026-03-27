@@ -1,3 +1,5 @@
+## We HAVE MOVED TO SUDODEM-PHOENIX.
+
 SudoDEM: A Discrete Element Code for Non-spherical Particles
 
 SudoDEM (https://sudodem.github.io) is specifically designed for modeling non-spherical particles using discrete element method (DEM), which inherits 
